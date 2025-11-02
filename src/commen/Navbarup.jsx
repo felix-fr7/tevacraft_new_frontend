@@ -89,7 +89,9 @@ const Navbarup = () => {
                     width: auto;
                     transition: transform 0.3s ease;
                     list-style: none; 
-                    border-radius: 8px; /* Added border-radius */
+                     /* Added border-radius */
+                    border-radius: 100%;
+
                 }
 
                 .logo-image:hover {
