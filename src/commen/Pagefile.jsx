@@ -26,7 +26,7 @@ const App = () => {
     const [statusMessage, setStatusMessage] = useState({ text: "", type: "" }); // type: 'success' or 'error'
 
     // The backend endpoint defined in index.js
-    const API_ENDPOINT = "http://34.228.78.128:5000/api/submit-enrollment";
+    const API_ENDPOINT = "https://api.tevacraft.in/api/submit-enrollment";
 
     const onSubmit = async (data) => {
         setIsLoading(true);
