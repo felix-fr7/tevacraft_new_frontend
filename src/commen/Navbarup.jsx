@@ -335,7 +335,7 @@ const Navbarup = () => {
                         className="navbar-register-button" 
                         onClick={handleRegisterClick} 
                     >
-                        Enrolment form
+                        Join our translation team
                     </button>
                 </li>
             </ul>

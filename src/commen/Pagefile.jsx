@@ -18,9 +18,8 @@ const languages = [
 const domains = ["Technical", "Educational", "Medical", "Legal", "Finance", "IT"];
 const expertise = ["Translation", "Proofreading", "Editing", "Localization"];
 
-// --- Main Component (Name changed to 'App' to fix ESLint error) ---
+// --- Main Component ---
 const App = () => {
-    // Hooks are now called inside an uppercase-starting function (App)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const [statusMessage, setStatusMessage] = useState({ text: "", type: "" }); // type: 'success' or 'error'
@@ -55,6 +54,7 @@ const App = () => {
             if (data.resume && data.resume[0]) {
                 formData.append('resume', data.resume[0]);
             } else {
+                // This path should ideally be caught by the required validation in useForm, but it's kept for robustness.
                 throw new Error("Resume file is missing.");
             }
 
@@ -96,9 +96,9 @@ const App = () => {
     return (
         <div className="mainform">
             {/* =======================================================
-              INLINE CSS FOR PAGEFILE COMPONENT
-              =======================================================
-            */}
+             INLINE CSS FOR PAGEFILE COMPONENT
+             =======================================================
+             */}
             <style>{`
                 /* ======================================================= */
                 /* Base Variables & Structure - TEAL COLOR SCHEME */
@@ -462,44 +462,28 @@ const App = () => {
                 {errors.expertise && <span className="error">{errors.expertise.message}</span>}
 
 
-                {/* Bank Info */}
-                <label>Bank Details</label>
-                <input 
-                    placeholder="Beneficiary Name" 
-                    disabled={isLoading}
-                    {...register("beneficiary", { required: "Beneficiary Name is required" })} 
-                />
-                {errors.beneficiary && <span className="error">{errors.beneficiary.message}</span>}
-
-                <input 
-                    placeholder="Bank Account Number" 
-                    disabled={isLoading}
-                    {...register("accountno", { required: "Account Number is required" })} 
-                />
-                {errors.accountno && <span className="error">{errors.accountno.message}</span>}
-
-                <input 
-                    placeholder="Bank Branch Address" 
-                    disabled={isLoading}
-                    {...register("branchaddress", { required: "Branch Address is required" })} 
-                />
-                {errors.branchaddress && <span className="error">{errors.branchaddress.message}</span>}
-
-                <input 
-                    placeholder="IFSC Code" 
-                    disabled={isLoading}
-                    {...register("ifsc", { required: "IFSC Code is required" })} 
-                />
-                {errors.ifsc && <span className="error">{errors.ifsc.message}</span>}
-
-
                 {/* Resume Upload */}
-                <label>Upload Resume *</label>
+                <label>Upload Resume (Max 15MB) *</label>
                 <input 
                     type="file" 
                     accept=".pdf,.doc,.docx" 
                     disabled={isLoading}
-                    {...register("resume", { required: "Resume file is required" })} 
+                    {...register("resume", { 
+                        required: "Resume file is required",
+                        validate: {
+                            // Client-side 15MB file size validation
+                            maxSize: (fileList) => {
+                                const file = fileList[0];
+                                const MAX_SIZE_BYTES = 15 * 1024 * 1024; // 15 MB
+                                
+                                if (file && file.size > MAX_SIZE_BYTES) {
+                                    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                                    return `File size must be less than 15MB. Your file is ${fileSizeMB}MB.`;
+                                }
+                                return true;
+                            }
+                        }
+                    })} 
                 />
                 {errors.resume && <span className="error">{errors.resume.message}</span>}
 
