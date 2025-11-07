@@ -463,7 +463,7 @@ const App = () => {
 
 
                 {/* Resume Upload */}
-                <label>Upload Resume (Max 15MB) *</label>
+                <label>Upload Resume (Max 10MB) *</label>
                 <input 
                     type="file" 
                     accept=".pdf,.doc,.docx" 
