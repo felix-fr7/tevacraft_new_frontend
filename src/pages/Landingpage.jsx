@@ -23,9 +23,7 @@ const CTASection = ({ title, content }) => {
       <div className="cta-content">
         <h2 className="cta-title">{title}</h2>
         <p className="cta-text">{content}</p>
-        <button className="cta-button primary-button" onClick={() => console.log('Contact Us Clicked')}>
-          Start Your AI Journey Today
-        </button>
+        {/* BUTTON REMOVED: "Start Your AI Journey Today" */}
       </div>
     </section>
   );
@@ -43,6 +41,40 @@ const InsightLink = ({ title, description }) => {
       <p className="insight-description">{description}</p>
     </a>
   );
+};
+
+// 🌟 NEW: Custom component for the Healthcare AI Solutions section 
+const HealthcareSection = () => {
+    return (
+        <section className="healthcare-section">
+            <div className="container healthcare-container">
+                <div className="healthcare-image-wrapper">
+                    {/* Placeholder for an AI-related healthcare image */}
+                    <div className="healthcare-image-placeholder">
+                        <svg className="ai-icon-large" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 7v8M9 10l3-3 3 3"/>
+                            <path d="M8 15h8"/>
+                            <circle cx="9" cy="15" r="1"/>
+                            <circle cx="15" cy="15" r="1"/>
+                        </svg>
+                        <p className="image-caption">Intelligent Diagnosis & Workflow Optimization</p>
+                    </div>
+                </div>
+                <div className="healthcare-content">
+                    <p className="healthcare-tagline">Tevacraft AI Systems - Healthcare AI Solutions</p>
+                    <h2 className="healthcare-title">
+                        Smarter, Safer, and More Ethical Intelligence for Modern Healthcare
+                    </h2>
+                    <p className="healthcare-description">
+                        We develop cutting-edge AI solutions for the healthcare industry, focusing on diagnostic precision, operational efficiency, and patient data security. Our systems help clinicians make better decisions, accelerate drug discovery, and optimize hospital management, all while maintaining strict compliance with regulations like HIPAA.
+                    </p>
+                    <a href="/healthcare" className="primary-button healthcare-button" >
+                        Healthcare AI Solutions
+                    </a>
+                </div>
+            </div>
+        </section>
+    );
 };
 
 
@@ -140,6 +172,11 @@ const Landingpage = () => {
             
             /* New Glow Color for Dark Mode Hero */
             --hero-glow-color: rgba(255, 255, 255, 0.9); /* Bright white/light blue for contrast */
+            
+            /* 🌟 NEW: Healthcare Section Colors (Updated Theme) 🌟 */
+            --healthcare-accent: #4CAF50;   /* Deep Teal/Sea Green - Primary Focus Color */
+            --healthcare-bg: #ffffffff;      /* Very Light Green/Teal - Section Background */
+            --healthcare-title-color: #2a7a2dff; /* Dark Green - For titles/headlines in this section */
         }
 
         * {
@@ -189,6 +226,17 @@ const Landingpage = () => {
             background-color: var(--secondary-color);
             box-shadow: 0 12px 30px rgba(11, 92, 255, 0.5);
         }
+        
+        /* Specific Healthcare Button Styling */
+        .healthcare-button {
+            background-color: var(--healthcare-accent);
+            box-shadow: 0 6px 15px rgba(0, 163, 137, 0.4);
+        }
+        .healthcare-button:hover {
+            background-color: #00735E; /* Darker green on hover */
+            box-shadow: 0 12px 30px rgba(0, 163, 137, 0.6);
+        }
+
 
         /* --- Hero Section (The BEST Animation Zone) --- */
         .hero-section {
@@ -321,7 +369,7 @@ const Landingpage = () => {
             opacity: 0.95;
             animation: slideInDown 1.8s ease-out; 
         }
-
+        
         /* --- Flowing Grid Background (New Element) --- */
         .hero-grid {
             position: absolute;
@@ -400,6 +448,7 @@ const Landingpage = () => {
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInRise 0.8s forwards;
+            animation-delay: var(--delay); /* Use the delay prop here */
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -439,7 +488,110 @@ const Landingpage = () => {
             flex-grow: 1;
             font-weight: 400; 
         }
+        
+        /* 🌟 NEW: Healthcare Section Styles 🌟 */
+        .healthcare-section {
+            background-color: var(--healthcare-bg); 
+            padding: 100px 5%;
+            border-top: 1px solid #0f8946ff;
+            border-bottom: 1px solid #0f8946ff;
+        }
 
+        .healthcare-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            padding: 0; /* Remove container padding inside this section */
+        }
+
+        .healthcare-image-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* Image Placeholder Styling */
+        .healthcare-image-placeholder {
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-premium);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseGlow 4s infinite alternate; /* Added a subtle glow animation */
+            border: 5px solid var(--healthcare-accent);
+            padding: 20px;
+        }
+        
+        .healthcare-image-placeholder:hover {
+            transform: scale(1.03);
+        }
+        
+        .ai-icon-large {
+            width: 100px;
+            height: 100px;
+            color: var(--healthcare-accent);
+            stroke-width: 1;
+            animation: rotate-in 1.5s ease-out;
+            margin-bottom: 15px;
+        }
+        
+        .image-caption {
+            color: var(--muted-text);
+            font-style: italic;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(0, 163, 137, 0.3); }
+            100% { box-shadow: 0 0 30px rgba(0, 163, 137, 0.6); }
+        }
+        
+        @keyframes rotate-in {
+            from { transform: rotateY(90deg) scale(0.5); opacity: 0; }
+            to { transform: rotateY(0deg) scale(1); opacity: 1; }
+        }
+
+        .healthcare-content {
+            flex: 1;
+            padding: 20px 0;
+            animation: fadeIn 1.2s ease-in-out 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .healthcare-tagline {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--healthcare-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .healthcare-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            /* Applying the new dark title color */
+            color: var(--healthcare-title-color); 
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .healthcare-description {
+            font-size: 1.15rem;
+            color: #0f8946ff;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+        
         /* --- CTA Section --- */
         .cta-section {
             /* Background color kept dark for high contrast CTA */
@@ -580,6 +732,26 @@ const Landingpage = () => {
             .cta-text {
                 font-size: 1.1rem;
             }
+            
+            /* Healthcare Section Responsiveness (Tablet) */
+            .healthcare-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .healthcare-content {
+                order: 2;
+            }
+            .healthcare-image-wrapper {
+                order: 1;
+                margin-bottom: 30px;
+            }
+            .healthcare-title {
+                font-size: 2.2rem;
+            }
+            .healthcare-button {
+                width: 100%;
+                max-width: 350px;
+            }
         }
 
         /* --- MOBILE (Up to 600px) --- */
@@ -626,23 +798,39 @@ const Landingpage = () => {
             .hero-content::before {
                 display: none; 
             }
+            
+            /* Healthcare Section Responsiveness (Mobile) */
+            .healthcare-title {
+                font-size: 1.8rem;
+            }
+            .healthcare-description {
+                font-size: 1rem;
+            }
+            .healthcare-image-placeholder {
+                height: 250px;
+                max-width: 90%;
+            }
+            .ai-icon-large {
+                width: 70px;
+                height: 70px;
+            }
+            .healthcare-button {
+                width: 100%;
+            }
         }
       `}</style>
 
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-grid"></div> {/* New Flowing Grid */}
+        <div className="hero-grid"></div>
         <div className="hero-content">
-          {/* New Quantum Pulse will animate behind this text */}
           <h1 className="hero-headline">
             Transforming Business Through Intelligent AI Solutions
           </h1>
           <p className="hero-subheadline">
             From intelligent automation to custom AI applications, our innovative and reliable AI solutions give you the competitive advantage in today's digital landscape.
           </p>
-          <button className="primary-button hero-button" onClick={() => console.log('Partner Clicked')}>
-            Partner with Tevacraft
-          </button>
+          {/* BUTTON REMOVED: "Partner with Tevacraft" */}
         </div>
       </section>
 
@@ -657,6 +845,9 @@ const Landingpage = () => {
           </div>
         </div>
       </section>
+      
+      {/* 🌟 NEW SECTION: Healthcare AI Solutions (Theme Applied) 🌟 */}
+      <HealthcareSection />
 
       {/* Welcome to Intelligent Business Transformation (CTA-style content) */}
       <CTASection

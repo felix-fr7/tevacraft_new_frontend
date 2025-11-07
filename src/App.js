@@ -15,6 +15,8 @@ import KnowledgeCenter from './pages/KnowledgeCenter';
 import ContactUs from './pages/ContactUs';
 import FAQ from './pages/FAQ';
 import LocalizationServices from './pages/LocalizationServices';
+import HealthcareSolutionsPage from './pages/healthcare';
+
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +37,7 @@ function App() {
           <Route path="/faq" element={<FAQ/>} />
           <Route path="/localization-services" element={<LocalizationServices/>} />
           <Route path="/register" element={<Pagefile/>} />
+          <Route path="/healthcare" element={<HealthcareSolutionsPage/>} />
 
 
         </Routes>
