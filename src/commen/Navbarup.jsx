@@ -322,7 +322,7 @@ const Navbarup = () => {
             <ul className={`navbar-links ${isOpen ? 'open' : ''}`}>
                 <NavLink href="/service">Service</NavLink>
                 <NavLink href="/industries">Industries</NavLink>
-                <NavLink href="/technology">TECHNOLOGY & PLATFORMS</NavLink>
+                <NavLink href="/technology">Technology & Platforms</NavLink>
                 <NavLink href="/about">About</NavLink>
                 <NavLink href="/case-studies">Case-Studies</NavLink>
                 <NavLink href="/knowledge-center">Knowledge-Center</NavLink>

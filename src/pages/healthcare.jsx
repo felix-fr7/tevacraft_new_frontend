@@ -489,7 +489,7 @@ const HealthcareSolutionsPage = () => {
                         </div>
                     </div>
 
-                    <h2 className="section-title" style={{marginTop: '60px', marginBottom: '30px'}}>CALL TO ACTION</h2>
+                    
                     <div className="cta-grid">
                         <CTALink 
                             title="Schedule a Free Consultation →" 
