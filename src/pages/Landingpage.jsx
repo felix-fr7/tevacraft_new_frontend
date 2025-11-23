@@ -1,20 +1,20 @@
 import React from 'react';
 
 // Custom component for the feature cards
-const FeatureCard = ({ title, content, icon, delay }) => {
-  return (
-    <div
-      className="feature-card"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="icon-container">
-        {icon}
-      </div>
-      <h3 className="card-title">{title}</h3>
-      <p className="card-content">{content}</p>
-    </div>
-  );
-};
+function FeatureCard({ title, content, icon, delay }) {
+    return (
+        <div
+            className="feature-card"
+            style={{ animationDelay: `${delay}ms` }}
+        >
+            <div className="icon-container">
+                {icon}
+            </div>
+            <h3 className="card-title">{title}</h3>
+            <p className="card-content">{content}</p>
+        </div>
+    );
+}
 
 // Custom component for the Call-to-Action banner
 const CTASection = ({ title, content }) => {
@@ -23,7 +23,6 @@ const CTASection = ({ title, content }) => {
       <div className="cta-content">
         <h2 className="cta-title">{title}</h2>
         <p className="cta-text">{content}</p>
-        {/* BUTTON REMOVED: "Start Your AI Journey Today" */}
       </div>
     </section>
   );
@@ -43,22 +42,17 @@ const InsightLink = ({ title, description }) => {
   );
 };
 
-// 🌟 NEW: Custom component for the Healthcare AI Solutions section 
+// Healthcare Section
 const HealthcareSection = () => {
     return (
         <section className="healthcare-section">
             <div className="container healthcare-container">
                 <div className="healthcare-image-wrapper">
-                    {/* Placeholder for an AI-related healthcare image */}
-                    <div className="healthcare-image-placeholder">
-                        <svg className="ai-icon-large" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 7v8M9 10l3-3 3 3"/>
-                            <path d="M8 15h8"/>
-                            <circle cx="9" cy="15" r="1"/>
-                            <circle cx="15" cy="15" r="1"/>
-                        </svg>
-                        <p className="image-caption">Intelligent Diagnosis & Workflow Optimization</p>
-                    </div>
+                    <img 
+                        src="./asset/health.png" 
+                        alt="Healthcare AI Analysis" 
+                        className="healthcare-real-image"
+                    />
                 </div>
                 <div className="healthcare-content">
                     <p className="healthcare-tagline">Tevacraft AI Systems - Healthcare AI Solutions</p>
@@ -155,57 +149,41 @@ const Landingpage = () => {
             --card-bg: #ffffff;
             --border-radius: 14px;
             
-            /* Mapped Variables - UPDATED FOR DARK HERO SECTION */
+            /* Mapped Variables */
             --primary-color: var(--brand-color); 
             --secondary-color: #004c99; 
-            --text-light: #f0f4f8; /* Light text for dark backgrounds */
+            --text-light: #f0f4f8; 
             --text-dark: #1f2937;
-            --bg-dark: #071a33; /* Dark background for footer/CTA */
-            --bg-hero-dark: #4CAF50; /* Black-ish background for Hero */
+            --bg-dark: #071a33; 
+            --bg-hero-dark: #020b1f; 
             --bg-light: var(--card-bg);
             --bg-subtle: var(--main-bg); 
             
-            /* Calculated/Derived Styles for Smoothness */
+            /* Calculated/Derived Styles */
             --brand-hover: #337dff;
             --shadow-premium: 0 15px 40px rgba(0, 0, 0, 0.08);
             --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.03); 
             
-            /* New Glow Color for Dark Mode Hero */
-            --hero-glow-color: rgba(255, 255, 255, 0.9); /* Bright white/light blue for contrast */
+            --hero-glow-color: rgba(255, 255, 255, 0.9); 
             
-            /* 🌟 NEW: Healthcare Section Colors (Updated Theme) 🌟 */
-            --healthcare-accent: #4CAF50;   /* Deep Teal/Sea Green - Primary Focus Color */
-            --healthcare-bg: #ffffffff;      /* Very Light Green/Teal - Section Background */
-            --healthcare-title-color: #2a7a2dff; /* Dark Green - For titles/headlines in this section */
+            /* Healthcare Section Colors */
+            --healthcare-accent: #4CAF50; 
+            --healthcare-bg: #ffffffff; 
+            --healthcare-title-color: #2a7a2dff;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
-            /* Default body background remains light for the rest of the page */
             background-color: var(--bg-light); 
             color: var(--text-dark);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
 
-        .tevacraft-app {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 0; 
-        }
+        .tevacraft-app { display: flex; flex-direction: column; min-height: 100vh; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 80px 0; }
 
         /* --- Buttons --- */
         .primary-button {
@@ -219,26 +197,19 @@ const Landingpage = () => {
             cursor: pointer;
             transition: background-color 0.4s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
             box-shadow: 0 6px 15px rgba(11, 92, 255, 0.3);
+            text-decoration: none; 
+            display: inline-block; 
         }
-
         .primary-button:hover {
             transform: translateY(-5px);
             background-color: var(--secondary-color);
             box-shadow: 0 12px 30px rgba(11, 92, 255, 0.5);
         }
         
-        /* Specific Healthcare Button Styling */
-        .healthcare-button {
-            background-color: var(--healthcare-accent);
-            box-shadow: 0 6px 15px rgba(0, 163, 137, 0.4);
-        }
-        .healthcare-button:hover {
-            background-color: #00735E; /* Darker green on hover */
-            box-shadow: 0 12px 30px rgba(0, 163, 137, 0.6);
-        }
+        .healthcare-button { background-color: var(--healthcare-accent); box-shadow: 0 6px 15px rgba(0, 163, 137, 0.4); }
+        .healthcare-button:hover { background-color: #00735E; box-shadow: 0 12px 30px rgba(0, 163, 137, 0.6); }
 
-
-        /* --- Hero Section (The BEST Animation Zone) --- */
+        /* --- Hero Section --- */
         .hero-section {
             color: var(--text-light);
             padding: 130px 5%; 
@@ -246,577 +217,168 @@ const Landingpage = () => {
             position: relative;
             overflow: hidden; 
             animation: fadeIn 1.2s ease-in-out;
-            
-            /* UPDATED: Black Background */
-            background: var(--bg-hero-dark); 
+            background: linear-gradient(135deg, #020b1f 0%, #004c99 60%, #0b5cff 100%);
         }
         
-        /* 1. "Robot & Tools" Data Flow (::before) - Moving Lines/Data */
+        /* Overlay Animations */
         .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; 
-            opacity: 0.7;
-            pointer-events: none;
-            
-            /* UPDATED: White/Light lines on dark background */
-            background-image: 
-                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px),
-                repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px);
-            background-size: 100px 100px, 100px 100px;
-            background-position: 0 0, 0 0; 
-            
-            animation: 
-                robotToolsFlow1 30s linear infinite,
-                robotToolsFlow2 40s linear reverse infinite;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; pointer-events: none;
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px);
+            background-size: 100px 100px, 100px 100px; background-position: 0 0, 0 0; 
+            animation: robotToolsFlow1 30s linear infinite, robotToolsFlow2 40s linear reverse infinite;
         }
-        
-        /* 2. "Teaching Moment" Spotlight/Glow (::after) - Scanning Light */
         .hero-section::after {
-            content: '';
-            position: absolute;
-            top: 50%; 
-            left: -20%; 
-            width: 40%;
-            height: 100%; 
-            transform: translateY(-50%) rotate(10deg); 
-            
-            /* UPDATED: White/Light Blue scanning light on dark background */
-            background: linear-gradient(
-                to right, 
-                transparent, 
-                rgba(255, 255, 255, 0.1) 10%, 
-                rgba(173, 216, 230, 0.2) 50%, /* Light Blue hint */
-                rgba(255, 255, 255, 0.1) 90%, 
-                transparent
-            );
-            filter: blur(80px); /* Increased blur for a softer glow */
-            z-index: 2; 
-            opacity: 0.8;
-            pointer-events: none;
-            animation: teachingSpotlight 25s ease-in-out infinite alternate; 
+            content: ''; position: absolute; top: 50%; left: -20%; width: 40%; height: 100%; transform: translateY(-50%) rotate(10deg); 
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 10%, rgba(173, 216, 230, 0.2) 50%, rgba(255, 255, 255, 0.1) 90%, transparent);
+            filter: blur(80px); z-index: 2; opacity: 0.8; pointer-events: none; animation: teachingSpotlight 25s ease-in-out infinite alternate; 
         }
-
-        /* 3. The BEST: "Quantum Pulse" for the Core Idea */
         .hero-section .hero-content::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 50px; 
-            height: 50px; 
-            
-            /* UPDATED: Core pulse is bright white on black background */
-            background: radial-gradient(circle, var(--hero-glow-color) 0%, transparent 70%);
-            
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 5; /* Below the text, above the glow */
-            pointer-events: none;
-            animation: quantumPulse 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+            content: ''; position: absolute; top: 50%; left: 50%; width: 50px; height: 50px; 
+            background: radial-gradient(circle, var(--hero-glow-color) 0%, transparent 70%); border-radius: 50%; transform: translate(-50%, -50%); z-index: 5; pointer-events: none; animation: quantumPulse 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
         }
 
+        /* Keyframes */
+        @keyframes robotToolsFlow1 { 0% { background-position: 0 0; } 100% { background-position: 200px 200px; } }
+        @keyframes robotToolsFlow2 { 0% { background-position: 0 0; } 100% { background-position: -150px 150px; } }
+        @keyframes teachingSpotlight { 0% { left: -20%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } 50% { left: 50%; transform: translateY(-50%) rotate(-5deg); opacity: 1; } 100% { left: 120%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } }
+        @keyframes quantumPulse { 0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(3); } 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6); } }
+        @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes gridFlow { 0% { background-position: 0 0; } 100% { background-position: 300px 300px; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Keyframes for "Robot & Tools" Data Flow */
-        @keyframes robotToolsFlow1 {
-            0% { background-position: 0 0; }
-            100% { background-position: 200px 200px; }
-        }
-        @keyframes robotToolsFlow2 {
-            0% { background-position: 0 0; }
-            100% { background-position: -150px 150px; }
-        }
-
-        /* Keyframes for "Teaching Moment" Spotlight/Glow */
-        @keyframes teachingSpotlight {
-            0% { left: -20%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; }
-            50% { left: 50%; transform: translateY(-50%) rotate(-5deg); opacity: 1; } 
-            100% { left: 120%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; }
-        }
+        .hero-content { max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
+        .hero-headline { font-size: 4.5rem; font-weight: 900; margin-bottom: 25px; line-height: 1.1; animation: slideInDown 1.5s ease-out; }
+        .hero-subheadline { font-size: 1.45rem; font-weight: 300; margin-bottom: 50px; opacity: 0.95; animation: slideInDown 1.8s ease-out; }
         
-        /* Keyframes for "Quantum Pulse" - The "Aha!" Moment */
-        @keyframes quantumPulse {
-            0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(3); } /* Slightly stronger glow */
-            100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6); }
-        }
-
-
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10; 
-        }
-
-        .hero-headline {
-            font-size: 4.5rem; 
-            font-weight: 900;
-            margin-bottom: 25px;
-            line-height: 1.1;
-            /* Optional Text Animation - Fade In + Slight Rise */
-            animation: slideInDown 1.5s ease-out; 
-        }
-
-        .hero-subheadline {
-            font-size: 1.45rem;
-            font-weight: 300;
-            margin-bottom: 50px;
-            opacity: 0.95;
-            animation: slideInDown 1.8s ease-out; 
-        }
-        
-        /* --- Flowing Grid Background (New Element) --- */
         .hero-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; 
-            pointer-events: none;
-            opacity: 0.3; 
-            
-            /* UPDATED: White grid lines on dark background */
-            background-image: linear-gradient(to right, rgba(255,255,255,.07) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255,255,255,.07) 1px, transparent 1px);
-            background-size: 30px 30px, 30px 30px;
-            
-            /* Grid subtle movement */
-            animation: gridFlow 60s linear infinite; 
-        }
-        
-        @keyframes gridFlow {
-            0% { background-position: 0 0; }
-            100% { background-position: 300px 300px; }
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.3; 
+            background-image: linear-gradient(to right, rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.07) 1px, transparent 1px);
+            background-size: 30px 30px, 30px 30px; animation: gridFlow 60s linear infinite; 
         }
 
+        /* --- Features Section --- */
+        .features-section { background-color: var(--bg-light); }
+        .section-title { font-size: 3rem; font-weight: 800; color: var(--text-dark); text-align: center; margin-bottom: 70px; position: relative; animation: slideInDown 0.8s ease-out; }
+        .section-title::after { content: ''; display: block; width: 90px; height: 6px; background-color: var(--primary-color); margin: 15px auto 0; border-radius: 3px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
 
-        /* --- Other Sections (Remains Light Mode) --- */
-        .features-section {
-            background-color: var(--bg-light);
-        }
-
-        .section-title {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            text-align: center;
-            margin-bottom: 70px; 
-            position: relative;
-            animation: slideInDown 0.8s ease-out;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 90px; 
-            height: 6px; 
-            background-color: var(--primary-color);
-            margin: 15px auto 0;
-            border-radius: 3px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 40px; 
-        }
-
-        /* --- Feature Card Styling --- */
-        @keyframes fadeInRise {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes fadeInRise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         .feature-card {
-            background-color: var(--card-bg); 
-            border-radius: var(--border-radius);
-            padding: 40px; 
-            box-shadow: var(--shadow-subtle); 
+            background-color: var(--card-bg); border-radius: var(--border-radius); padding: 40px; box-shadow: var(--shadow-subtle); 
             transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInRise 0.8s forwards;
-            animation-delay: var(--delay); /* Use the delay prop here */
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #e0e0e0; 
+            opacity: 0; transform: translateY(30px); animation: fadeInRise 0.8s forwards; animation-delay: var(--delay);
+            height: 100%; display: flex; flex-direction: column; border: 1px solid #e0e0e0; position: relative; overflow: hidden; z-index: 1;
         }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-premium);
-        }
-
-        .icon-container {
-            color: var(--primary-color); 
-            width: 65px;
-            height: 65px;
-            margin-bottom: 20px;
-            padding: 8px;
-            border-radius: 50%;
-            background: rgba(11, 92, 255, 0.1); 
-        }
-
-        .icon-container svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .card-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-        }
-
-        .card-content {
-            font-size: 1rem;
-            color: var(--muted-text); 
-            flex-grow: 1;
-            font-weight: 400; 
-        }
+        .feature-card::before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background-color: var(--brand-color); transition: height 0.4s ease-in-out; z-index: -1; }
+        .feature-card:hover::before { height: 100%; }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-premium); border-color: transparent; }
+        .feature-card:hover .card-title, .feature-card:hover .card-content { color: #ffffff; transition: color 0.3s ease; }
+        .icon-container { color: var(--primary-color); width: 65px; height: 65px; margin-bottom: 20px; padding: 8px; border-radius: 50%; background: rgba(11, 92, 255, 0.1); transition: all 0.3s ease; }
+        .feature-card:hover .icon-container { background: rgba(255, 255, 255, 0.2); color: #ffffff; }
+        .icon-container svg { width: 100%; height: 100%; }
+        .card-title { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; position: relative; z-index: 2; }
+        .card-content { font-size: 1rem; color: var(--muted-text); flex-grow: 1; font-weight: 400; position: relative; z-index: 2; }
         
-        /* 🌟 NEW: Healthcare Section Styles 🌟 */
-        .healthcare-section {
-            background-color: var(--healthcare-bg); 
-            padding: 100px 5%;
-            border-top: 1px solid #0f8946ff;
-            border-bottom: 1px solid #0f8946ff;
-        }
-
-        .healthcare-container {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-            padding: 0; /* Remove container padding inside this section */
-        }
-
-        .healthcare-image-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        
-        /* Image Placeholder Styling */
-        .healthcare-image-placeholder {
-            width: 100%;
-            max-width: 500px;
-            height: 350px;
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-premium);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: pulseGlow 4s infinite alternate; /* Added a subtle glow animation */
-            border: 5px solid var(--healthcare-accent);
-            padding: 20px;
-        }
-        
-        .healthcare-image-placeholder:hover {
-            transform: scale(1.03);
-        }
-        
-        .ai-icon-large {
-            width: 100px;
-            height: 100px;
-            color: var(--healthcare-accent);
-            stroke-width: 1;
-            animation: rotate-in 1.5s ease-out;
-            margin-bottom: 15px;
-        }
-        
-        .image-caption {
-            color: var(--muted-text);
-            font-style: italic;
-            font-size: 1rem;
-            text-align: center;
-        }
-        
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px rgba(0, 163, 137, 0.3); }
-            100% { box-shadow: 0 0 30px rgba(0, 163, 137, 0.6); }
-        }
-        
-        @keyframes rotate-in {
-            from { transform: rotateY(90deg) scale(0.5); opacity: 0; }
-            to { transform: rotateY(0deg) scale(1); opacity: 1; }
-        }
-
-        .healthcare-content {
-            flex: 1;
-            padding: 20px 0;
-            animation: fadeIn 1.2s ease-in-out 0.3s forwards;
-            opacity: 0;
-        }
-        
-        .healthcare-tagline {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--healthcare-accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-        }
-
-        .healthcare-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            /* Applying the new dark title color */
-            color: var(--healthcare-title-color); 
-            margin-bottom: 25px;
-            line-height: 1.2;
-        }
-
-        .healthcare-description {
-            font-size: 1.15rem;
-            color: #0f8946ff;
-            margin-bottom: 40px;
-            line-height: 1.7;
-        }
+        /* --- Healthcare Section Styles --- */
+        .healthcare-section { background-color: var(--healthcare-bg); padding: 100px 5%; border-top: 1px solid #0f8946ff; border-bottom: none; }
+        .healthcare-container { display: flex; align-items: center; gap: 60px; padding: 0; }
+        .healthcare-image-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        .healthcare-real-image { width: 100%; max-width: 500px; height: auto; border-radius: var(--border-radius); box-shadow: var(--shadow-premium); border: 5px solid var(--healthcare-accent); transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .healthcare-real-image:hover { transform: scale(1.03); }
+        .healthcare-content { flex: 1; padding: 20px 0; animation: fadeIn 1.2s ease-in-out 0.3s forwards; opacity: 0; }
+        .healthcare-tagline { font-size: 0.95rem; font-weight: 700; color: var(--healthcare-accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .healthcare-title { font-size: 2.8rem; font-weight: 800; color: var(--healthcare-title-color); margin-bottom: 25px; line-height: 1.2; }
+        .healthcare-description { font-size: 1.15rem; color: #0f8946ff; margin-bottom: 40px; line-height: 1.7; }
         
         /* --- CTA Section --- */
-        .cta-section {
-            /* Background color kept dark for high contrast CTA */
-            background-color: var(--secondary-color);
-            color: var(--text-light);
-            padding: 100px 5%; 
-            text-align: center;
-            animation: fadeIn 1.2s ease-in-out;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .cta-content {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .cta-title {
-            font-size: 2.8rem; 
-            font-weight: 700;
-            margin-bottom: 25px;
-        }
-
-        .cta-text {
-            font-size: 1.25rem; 
-            margin-bottom: 40px;
-            opacity: 0.95;
-            font-weight: 300;
-        }
+        .cta-section { background-color: var(--secondary-color); color: var(--text-light); padding: 100px 5%; text-align: center; animation: fadeIn 1.2s ease-in-out; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .cta-content { max-width: 900px; margin: 0 auto; }
+        .cta-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 25px; }
+        .cta-text { font-size: 1.25rem; margin-bottom: 40px; opacity: 0.95; font-weight: 300; }
         
-        .cta-section .primary-button {
-            background-color: var(--brand-hover);
-            box-shadow: 0 6px 15px rgba(255, 255, 255, 0.3);
-        }
-        .cta-section .primary-button:hover {
-            background-color: var(--primary-color);
-            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.5);
-        }
+        /* --- Insights Section --- */
+        .insights-section { background-color: var(--bg-subtle); }
+        .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .insight-link { display: flex; flex-direction: column; background-color: var(--card-bg); padding: 35px; border-radius: var(--border-radius); text-decoration: none; color: var(--text-dark); box-shadow: var(--shadow-subtle); transition: transform 0.4s, box-shadow 0.4s, border-top 0.4s; animation: fadeIn 0.8s ease-in-out; border-top: 4px solid transparent; }
+        .insight-link:hover { transform: translateY(-5px); box-shadow: 0 18px 35px rgba(0, 0, 0, 0.1); border-top: 4px solid var(--primary-color); }
+        .insight-title { font-size: 1.45rem; color: var(--text-dark); margin-bottom: 10px; font-weight: 800; }
+        .insight-description { font-size: 1rem; color: var(--muted-text); font-weight: 400; }
 
-        /* --- Insights & Resources Section --- */
-        .insights-section {
-            background-color: var(--bg-subtle); 
-        }
-
-        .insights-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px; 
-        }
-
-        .insight-link {
-            display: flex;
-            flex-direction: column;
-            background-color: var(--card-bg); 
-            padding: 35px; 
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            color: var(--text-dark);
-            box-shadow: var(--shadow-subtle);
-            transition: transform 0.4s, box-shadow 0.4s, border-top 0.4s; 
-            animation: fadeIn 0.8s ease-in-out;
-            border-top: 4px solid transparent; 
-        }
-
-        .insight-link:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.1);
-            border-top: 4px solid var(--primary-color);
-        }
-
-        .insight-title {
-            font-size: 1.45rem; 
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        .insight-description {
-            font-size: 1rem;
-            color: var(--muted-text); 
-            font-weight: 400;
-        }
-
-        /* --- Footer --- */
-        .footer {
-            background-color: var(--bg-hero-dark); /* Using the same dark color as hero */
-            color: var(--text-light);
-            text-align: center;
-            padding: 40px 5%; 
+        /* --- FOOTER --- */
+        .main-footer {
+            background-color: #020b1f;
+            color: #f0f4f8;
+            padding-top: 60px;
+            border-top: 5px solid var(--primary-color);
             font-size: 0.95rem;
-            border-top: 8px solid var(--primary-color);
         }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 60px;
+            padding-bottom: 40px;
+            align-items: flex-start;
         }
+        .footer-col h3 { color: #fff; font-size: 1.2rem; margin-bottom: 20px; position: relative; padding-bottom: 10px; }
+        .footer-col h3::after { content: ''; position: absolute; left: 0; bottom: 0; width: 30px; height: 3px; background-color: var(--primary-color); }
+        .footer-about p { line-height: 1.6; color: #cbd5e1; margin-bottom: 20px; max-width: 90%; }
+        .footer-links { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #cbd5e1; text-decoration: none; transition: color 0.3s, padding-left 0.3s; }
+        .footer-links a:hover { color: var(--primary-color); padding-left: 5px; }
+        .contact-info li { margin-bottom: 15px; display: flex; align-items: flex-start; color: #cbd5e1; }
+        .contact-icon { margin-right: 10px; font-size: 1.1rem; color: var(--primary-color); min-width: 25px; }
+        .copyright-bar { background-color: rgba(0,0,0,0.3); padding: 20px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: #94a3b8; font-size: 0.9rem; }
 
-        .footer p {
-            opacity: 0.7;
-            font-weight: 300;
-        }
-
-        /* --- Keyframe Animations (General) --- */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* --- Media Queries (Responsiveness) --- */
-        
-        /* --- TABLET/SMALL LAPTOP (Up to 1024px) --- */
+        /* --- Media Queries (Desktop/Tablet) --- */
         @media (max-width: 1024px) {
-            .hero-headline {
-                font-size: 3.5rem;
-            }
-            .features-grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-                gap: 30px;
-            }
-            .insights-grid {
-                gap: 20px; 
-            }
-            .cta-title {
-                font-size: 2.4rem;
-            }
-            .cta-text {
-                font-size: 1.1rem;
-            }
-            
-            /* Healthcare Section Responsiveness (Tablet) */
-            .healthcare-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            .healthcare-content {
-                order: 2;
-            }
-            .healthcare-image-wrapper {
-                order: 1;
-                margin-bottom: 30px;
-            }
-            .healthcare-title {
-                font-size: 2.2rem;
-            }
-            .healthcare-button {
-                width: 100%;
-                max-width: 350px;
-            }
+            .hero-headline { font-size: 3.5rem; }
+            .features-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+            .insights-grid { gap: 20px; }
+            .cta-title { font-size: 2.4rem; }
+            .healthcare-container { flex-direction: column; text-align: center; }
+            .healthcare-content { order: 2; }
+            .healthcare-image-wrapper { order: 1; margin-bottom: 30px; }
+            .healthcare-button { width: 100%; max-width: 350px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+            .footer-about { grid-column: 1 / -1; }
         }
 
-        /* --- MOBILE (Up to 600px) --- */
+        /* --- Mobile Styles (FIXED GAPS) --- */
         @media (max-width: 600px) {
-            .container {
-                padding: 50px 0;
-            }
-            .hero-section {
-                padding: 80px 5%;
-            }
-            .hero-headline {
-                font-size: 2.2rem;
-            }
-            .hero-subheadline {
-                font-size: 1.1rem;
-                margin-bottom: 30px;
-            }
-            .primary-button {
-                padding: 12px 30px;
-                font-size: 1rem;
-            }
-            .section-title {
-                font-size: 2.2rem;
-                margin-bottom: 40px;
-            }
-            .features-grid {
-                grid-template-columns: 1fr; /* Stack cards vertically */
-                gap: 25px;
-            }
-            .insights-grid {
-                grid-template-columns: 1fr; /* Stack insights vertically */
-                gap: 25px;
-            }
-            .cta-section {
-                padding: 70px 5%;
-            }
-            .cta-title {
-                font-size: 1.8rem;
-            }
-            /* Hide complex animation on small mobile screens for performance */
-            .hero-section::after, 
-            .hero-section::before,
-            .hero-grid,
-            .hero-content::before {
-                display: none; 
-            }
+            /* REDUCED CONTAINER PADDING */
+            .container { padding: 30px 0; }
             
-            /* Healthcare Section Responsiveness (Mobile) */
-            .healthcare-title {
-                font-size: 1.8rem;
-            }
-            .healthcare-description {
-                font-size: 1rem;
-            }
-            .healthcare-image-placeholder {
-                height: 250px;
-                max-width: 90%;
-            }
-            .ai-icon-large {
-                width: 70px;
-                height: 70px;
-            }
-            .healthcare-button {
-                width: 100%;
-            }
+            /* REDUCED HERO PADDING */
+            .hero-section { padding: 60px 5%; }
+            
+            /* REDUCED SECTION PADDINGS */
+            .healthcare-section { padding: 50px 5%; }
+            .cta-section { padding: 50px 5%; }
+            .main-footer { padding-top: 40px; }
+            
+            /* TYPOGRAPHY ADJUSTMENTS */
+            .hero-headline { font-size: 2.2rem; }
+            .hero-subheadline { font-size: 1.1rem; margin-bottom: 20px; }
+            .section-title { font-size: 2rem; margin-bottom: 30px; } /* Reduced bottom margin */
+            
+            /* COMPONENT SPECIFIC */
+            .primary-button { padding: 12px 30px; font-size: 1rem; }
+            .features-grid { grid-template-columns: 1fr; gap: 25px; }
+            .insights-grid { grid-template-columns: 1fr; gap: 25px; }
+            .cta-title { font-size: 1.8rem; }
+            
+            .healthcare-title { font-size: 1.8rem; }
+            .healthcare-description { font-size: 1rem; margin-bottom: 25px; }
+            .healthcare-button { width: 100%; }
+            
+            /* FOOTER STACKING */
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            .footer-about { grid-column: auto; }
+            
+            /* HIDE DECORATIONS ON MOBILE */
+            .hero-section::after, .hero-section::before, .hero-grid, .hero-content::before { display: none; }
         }
       `}</style>
 
@@ -830,7 +392,6 @@ const Landingpage = () => {
           <p className="hero-subheadline">
             From intelligent automation to custom AI applications, our innovative and reliable AI solutions give you the competitive advantage in today's digital landscape.
           </p>
-          {/* BUTTON REMOVED: "Partner with Tevacraft" */}
         </div>
       </section>
 
@@ -846,7 +407,7 @@ const Landingpage = () => {
         </div>
       </section>
       
-      {/* 🌟 NEW SECTION: Healthcare AI Solutions (Theme Applied) 🌟 */}
+      {/* Healthcare AI Solutions */}
       <HealthcareSection />
 
       {/* Welcome to Intelligent Business Transformation (CTA-style content) */}
@@ -872,10 +433,52 @@ const Landingpage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <p>© 2025 Tevacraft AI Systems. All rights reserved.</p>
+      {/* Comprehensive Footer */}
+      <footer className="main-footer">
+        <div className="container" style={{padding: '0'}}>
+            <div className="footer-grid">
+                {/* Column 1: About */}
+                <div className="footer-col footer-about">
+                    <h3>Tevacraft AI Systems</h3>
+                    <p>
+                        We specialize in delivering custom AI solutions, cloud infrastructure, and intelligent automation to help businesses scale and innovate securely.
+                    </p>
+                </div>
+
+                {/* Column 2: Quick Links */}
+                <div className="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul className="footer-links">
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/industries">Industries</a></li>
+                        <li><a href="/case-studies">Case Studies</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                {/* Column 3: Contact Info */}
+                <div className="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul className="footer-links contact-info">
+                        <li>
+                            <span className="contact-icon">📧</span> 
+                            <a href="mailto:biz.operations@tevacraft.in">biz.operations@tevacraft.in</a>
+                        </li>
+                        <li>
+                            <span className="contact-icon">📞</span> 
+                            <a href="tel:+919010805455">+91 9010805455</a>
+                        </li>
+                        <li>
+                            <span className="contact-icon">📍</span> 
+                            <span>Urbanrise Spring is in the air, Sri Vani Nagar, Ameenpur, Hyderabad, India</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div className="copyright-bar">
+            <p>© 2025 Tevacraft AI Systems. All Rights Reserved.</p>
         </div>
       </footer>
     </div>

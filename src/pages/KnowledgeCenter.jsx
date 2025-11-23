@@ -1,7 +1,7 @@
 import React from 'react';
 
 // --- Reusable Component for a single resource item ---
-const ResourceItem = ({ type, title, description, isFeatured = false }) => (
+const ResourceItem = ({ title, description, isFeatured = false }) => (
     <div className={`resource-item ${isFeatured ? 'featured' : ''}`}>
         <span className="item-icon">{isFeatured ? '📄' : '▪'}</span>
         <div className="item-content">
@@ -66,9 +66,10 @@ const KnowledgeCenter = () => {
     return (
         <div className="knowledge-center-wrapper">
             <style jsx>{`
-                /* --- Color Variables (Consistent) --- */
+                /* --- Color Variables (Green Theme) --- */
                 :root {
-                    --brand-color: #0b5cff; 
+                    --brand-color: #4CAF50; /* Green */
+                    --secondary-color: #2E7D32;
                     --text-dark: #1f2937; 
                     --text-light: #f0f4f8;
                     --bg-light: #ffffff;
@@ -76,70 +77,113 @@ const KnowledgeCenter = () => {
                     --muted-text: #4b5563;
                     --border-radius: 10px;
                     --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
+                    --shadow-premium: 0 15px 40px rgba(0, 0, 0, 0.15);
                     --accent-bg: #e6e9ed;
+                    --hero-glow-color: rgba(255, 255, 255, 0.9);
                 }
 
                 /* --- General Layout --- */
                 .knowledge-center-wrapper {
-                    padding: 80px 0;
-                    background-color: var(--bg-subtle);
                     font-family: 'Inter', sans-serif;
                     color: var(--text-dark);
+                    background-color: var(--bg-light);
                 }
                 .kc-container {
                     width: 90%;
                     max-width: 1200px;
                     margin: 0 auto; 
+                    padding: 80px 0;
                 }
 
-                /* --- Header Styles --- */
-                .kc-header {
+                /* ========================================= */
+                /* --- HERO SECTION (Green Gradient) --- */
+                /* ========================================= */
+                .hero-section {
+                    color: var(--text-light);
+                    padding: 130px 5%; 
                     text-align: center;
-                    margin-bottom: 60px;
+                    position: relative;
+                    overflow: hidden; 
+                    animation: fadeIn 1.2s ease-in-out;
+                    
+                    /* Green Linear Gradient Background */
+                    background: linear-gradient(135deg, #0a150a 0%, #1e4d2b 60%, #4CAF50 100%);
                 }
-                .kc-subtitle {
-                    font-size: 1rem;
-                    font-weight: 600;
-                    color: var(--brand-color);
-                    margin-bottom: 8px;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
+                
+                /* Hero Animations */
+                @keyframes robotToolsFlow1 { 0% { background-position: 0 0; } 100% { background-position: 200px 200px; } }
+                @keyframes robotToolsFlow2 { 0% { background-position: 0 0; } 100% { background-position: -150px 150px; } }
+                @keyframes teachingSpotlight { 0% { left: -20%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } 50% { left: 50%; transform: translateY(-50%) rotate(-5deg); opacity: 1; } 100% { left: 120%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } }
+                @keyframes quantumPulse { 0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(3); } 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6); } }
+                @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+                /* Overlay Elements */
+                .hero-section::before {
+                    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; pointer-events: none;
+                    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px);
+                    background-size: 100px 100px, 100px 100px; animation: robotToolsFlow1 30s linear infinite, robotToolsFlow2 40s linear reverse infinite;
                 }
-                .kc-headline {
-                    font-size: 2.8rem;
-                    font-weight: 800;
-                    color: var(--text-dark);
-                    margin: 0;
+                .hero-section::after {
+                    content: ''; position: absolute; top: 50%; left: -20%; width: 40%; height: 100%; transform: translateY(-50%) rotate(10deg);
+                    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 10%, rgba(76, 175, 80, 0.3) 50%, rgba(255, 255, 255, 0.1) 90%, transparent);
+                    filter: blur(80px); z-index: 2; opacity: 0.8; pointer-events: none; animation: teachingSpotlight 25s ease-in-out infinite alternate;
                 }
-                .kc-intro {
-                    font-size: 1.15rem;
-                    color: var(--muted-text);
-                    max-width: 800px;
-                    margin: 20px auto 0;
-                    line-height: 1.6;
+                .hero-content { max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
+                .hero-content::before {
+                    content: ''; position: absolute; top: 50%; left: 50%; width: 50px; height: 50px;
+                    background: radial-gradient(circle, var(--hero-glow-color) 0%, transparent 70%); border-radius: 50%; transform: translate(-50%, -50%); z-index: 5; pointer-events: none; animation: quantumPulse 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
                 }
+                .hero-headline { font-size: 4.5rem; font-weight: 900; margin-bottom: 25px; line-height: 1.1; animation: slideInDown 1.5s ease-out; }
+                .hero-subheadline { font-size: 1.45rem; font-weight: 300; margin-bottom: 50px; opacity: 0.95; animation: slideInDown 1.8s ease-out; }
+                .hero-grid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.3; background-image: linear-gradient(to right, rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 30px 30px, 30px 30px; animation: gridFlow 60s linear infinite; }
+                @keyframes gridFlow { 0% { background-position: 0 0; } 100% { background-position: 300px 300px; } }
 
                 /* --- Resources Grid --- */
                 .resources-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
                     gap: 30px;
                     margin-bottom: 60px;
                 }
                 
-                /* --- Resource Category Card --- */
+                /* --- Resource Category Card (WITH HOVER EFFECT) --- */
                 .resource-category {
-                    background-color: var(--bg-light);
+                    background-color: var(--bg-subtle);
                     padding: 30px;
                     border-radius: var(--border-radius);
                     box-shadow: var(--shadow-light);
                     border-top: 4px solid var(--brand-color);
-                    transition: box-shadow 0.3s;
+                    
+                    transition: transform 0.3s, box-shadow 0.3s;
+                    position: relative;
+                    overflow: hidden;
+                    z-index: 1;
                 }
-                .resource-category:hover {
-                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+                
+                /* Hover Gradient Fill */
+                .resource-category::before {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 0%; 
+                    background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%);
+                    transition: height 0.4s ease-in-out;
+                    z-index: -1; 
                 }
 
+                .resource-category:hover::before {
+                    height: 100%;
+                }
+
+                .resource-category:hover {
+                    transform: translateY(-5px);
+                    box-shadow: var(--shadow-premium);
+                    border-top: 4px solid transparent;
+                }
+
+                /* Text Color Change on Hover */
                 .category-title {
                     font-size: 1.8rem;
                     font-weight: 700;
@@ -147,53 +191,67 @@ const KnowledgeCenter = () => {
                     margin: 0 0 20px 0;
                     border-bottom: 2px solid var(--bg-subtle);
                     padding-bottom: 10px;
+                    transition: color 0.3s ease, border-color 0.3s ease;
+                }
+                .resource-category:hover .category-title {
+                    color: #ffffff;
+                    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
                 }
 
-                /* --- Resource Item Styling (White Papers, Technical Guides) --- */
-                .resource-list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                }
+                /* --- Resource Item Styling --- */
                 .resource-item {
                     display: flex;
                     align-items: flex-start;
                     padding: 15px 0;
                     border-bottom: 1px solid var(--bg-subtle);
+                    transition: border-color 0.3s ease;
                 }
-                .resource-item:last-child {
-                    border-bottom: none;
+                .resource-category:hover .resource-item {
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
                 }
+                
+                .resource-item:last-child { border-bottom: none; }
+                
                 .item-icon {
                     font-size: 1.2rem;
                     color: var(--brand-color);
                     margin-right: 15px;
                     line-height: 1.4;
+                    transition: color 0.3s ease;
                 }
-                .item-content {
-                    flex-grow: 1;
-                }
+                .resource-category:hover .item-icon { color: #ffffff; }
+
+                .item-content { flex-grow: 1; }
+                
                 .item-title-resource {
                     font-size: 1rem;
                     font-weight: 600;
                     color: var(--text-dark);
                     margin: 0;
                     line-height: 1.4;
+                    transition: color 0.3s ease;
                 }
+                .resource-category:hover .item-title-resource { color: #ffffff; }
+
                 .item-description {
                     font-size: 0.9rem;
                     color: var(--muted-text);
                     margin: 5px 0 0 0;
+                    transition: color 0.3s ease;
                 }
+                .resource-category:hover .item-description { color: #e0e0e0; }
 
-                /* --- Specific Styling for Simple Lists (Blog/Case Study) --- */
+                /* --- Simple Lists Styling --- */
                 .simple-list-item {
                     font-size: 1rem;
                     color: var(--muted-text);
                     margin-bottom: 12px;
                     position: relative;
                     padding-left: 20px;
+                    transition: color 0.3s ease;
                 }
+                .resource-category:hover .simple-list-item { color: #ffffff; }
+
                 .simple-list-item::before {
                     content: '•';
                     color: var(--brand-color);
@@ -201,7 +259,9 @@ const KnowledgeCenter = () => {
                     position: absolute;
                     left: 0;
                     top: 0;
+                    transition: color 0.3s ease;
                 }
+                .resource-category:hover .simple-list-item::before { color: #FFC300; } /* Yellow bullet on hover */
                 
                 /* --- Webinars & Events Section --- */
                 .webinars-section {
@@ -239,33 +299,39 @@ const KnowledgeCenter = () => {
                 }
 
                 /* --- Media Queries --- */
+                @media (max-width: 1024px) {
+                    .hero-headline { font-size: 3.5rem; }
+                }
                 @media (max-width: 768px) {
-                    .kc-headline {
-                        font-size: 2.2rem;
-                    }
-                    .resources-grid {
-                        grid-template-columns: 1fr;
-                        gap: 20px;
-                    }
-                    .webinars-section {
-                        padding: 30px;
-                    }
+                    .hero-section { padding: 80px 5%; }
+                    .hero-headline { font-size: 2rem; }
+                    .hero-subheadline { font-size: 1.1rem; }
+                    .resources-grid { grid-template-columns: 1fr; gap: 20px; }
+                    .webinars-section { padding: 30px; }
+                }
+                @media (max-width: 480px) {
+                    .hero-section::after, .hero-section::before, .hero-grid, .hero-content::before { display: none; }
+                    .hero-headline { font-size: 2rem; }
                 }
             `}</style>
 
-            <div className="kc-container">
-                <header className="kc-header">
-                    <p className="kc-subtitle">RESOURCES & INSIGHTS</p>
-                    <h1 className="kc-headline">
+            {/* --- Animated Hero Section --- */}
+            <section className="hero-section">
+                <div className="hero-grid"></div>
+                <div className="hero-content">
+                    <h1 className="hero-headline">
                         Insights, Best Practices & Industry Trends
                     </h1>
-                    <p className="kc-intro">
+                    <p className="hero-subheadline">
                         Stay informed about the latest developments in AI technology, implementation
                         strategies, and industry trends. Our resource center provides valuable insights to help you
-                        make informed decisions about your AI journey.
+                        make informed decisions.
                     </p>
-                </header>
+                </div>
+            </section>
 
+            <div className="kc-container">
+                
                 {/* --- Main Resources Grid --- */}
                 <section className="resources-grid">
                     

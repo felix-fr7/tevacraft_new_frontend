@@ -62,11 +62,12 @@ const Navbarup = () => {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding:10px;
+                    padding: 10px 20px; /* Adjusted padding */
                     height: var(--navbar-height);
                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
                     top: 0;
-                    flex-wrap: nowrap; 
+                    position: relative; /* Added relative for absolute positioning of menu */
+                    white-space: nowrap; /* Prevents wrapping in flex container */
                 }
 
                 /* --- Logo Styling --- */
@@ -74,8 +75,9 @@ const Navbarup = () => {
                     display: flex;
                     align-items: center;
                     height: 100%;
-                    flex-shrink: 0;
+                    flex-shrink: 0; /* Prevents logo from shrinking */
                     list-style: none; 
+                    z-index: 1002; /* Ensures logo stays above mobile menu if needed */
                 }
 
                 .navbar-logo a {
@@ -85,13 +87,11 @@ const Navbarup = () => {
                 }
 
                 .logo-image {
-                    height: 55px; /* Increased size */
+                    height: 55px; 
                     width: auto;
                     transition: transform 0.3s ease;
                     list-style: none; 
-                     /* Added border-radius */
                     border-radius: 100%;
-
                 }
 
                 .logo-image:hover {
@@ -104,18 +104,15 @@ const Navbarup = () => {
                     list-style: none;
                     display: flex;
                     padding: 0;
-                    margin: 10px;
+                    margin: 0;
                     align-items: center;
                     transition: all 0.3s ease-out;
                     flex-grow: 1;
                     justify-content: flex-end;
-                    margin-left: 5px;
-                    width: 100%;
-                    gap:0px
+                    gap: 15px; /* Used gap instead of margin for better control */
                 }
 
                 .navbar-links li {
-                    margin: 0 12px; 
                     flex-shrink: 0;
                     list-style: none;
                 }
@@ -123,9 +120,9 @@ const Navbarup = () => {
                 .navbar-links li a {
                     text-decoration: none;
                     color: var(--text-dark);
-                    font-size: 0.95rem;
+                    font-size: 0.9rem; /* Slightly reduced base size */
                     font-weight: 600;
-                    padding: 25px 0px; 
+                    padding: 10px 5px; 
                     position: relative;
                     transition: color 0.3s;
                     white-space: nowrap; 
@@ -144,7 +141,7 @@ const Navbarup = () => {
                 .navbar-links li a::after {
                     content: '';
                     position: absolute;
-                    bottom: 20px;
+                    bottom: 0px; /* Adjusted bottom */
                     left: 50%;
                     transform: translateX(-50%) scaleX(0);
                     width: 100%;
@@ -164,9 +161,9 @@ const Navbarup = () => {
                     background-color: var(--primary-color);
                     color: var(--text-light);
                     border: none;
-                    padding: 10px 25px;
+                    padding: 10px 20px;
                     border-radius: 50px;
-                    font-size: 0.95rem;
+                    font-size: 0.9rem;
                     font-weight: 700;
                     cursor: pointer;
                     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -195,32 +192,12 @@ const Navbarup = () => {
                 /* --- Media Queries for Robust Alignment --- */
                 /* ======================================================= */
 
-                /* 1. Large Desktop/Smaller 4K (Up to 1440px) */
-                @media (max-width: 1440px) and (min-width: 1201px) {
-                    .navbar-links li {
-                        margin: 0 10px;
-                    }
-                    .navbar-links li a {
-                        font-size: 0.9rem;
-                    }
-                }
-
-                /* 2. Standard Desktop/Laptop (Up to 1200px) - FINE-TUNED ALIGNMENT */
-                @media (max-width: 1200px) {
-                    .navbar-links li a {
-                        font-size: 0.85rem;
-                    }
-                    .navbar-links li {
-                        margin: 0 8px;
-                    }
-                    .navbar-register-button {
-                        padding: 8px 20px;
-                        font-size: 0.9rem;
-                    }
-                }
-
-                /* 3. Tablet/Small Laptop (Switch to Mobile Menu) */
-                @media (max-width: 992px) {
+                /* IMPORTANT CHANGE:
+                   Increased the breakpoint to 1280px.
+                   Since you have many links + a long button, standard laptops 
+                   cannot fit them all horizontally without overlapping the logo.
+                */
+                @media (max-width: 1280px) {
                     .menu-toggle {
                         display: block;
                     }
@@ -233,7 +210,7 @@ const Navbarup = () => {
                         left: 0;
                         width: 100%;
                         max-height: 0; 
-                        overflow: hidden;
+                        overflow: hidden; /* Hides content when closed */
                         background-color: var(--text-light);
                         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
                         z-index: 999;
@@ -242,11 +219,13 @@ const Navbarup = () => {
                         margin: 0;
                         justify-content: flex-start;
                         align-items: center;
+                        gap: 0; /* Reset gap for mobile stack */
                     }
 
                     .navbar-links.open {
-                        max-height: 600px;
+                        max-height: 80vh; /* Allow enough height for scroll if needed */
                         padding: 20px 0;
+                        overflow-y: auto; /* Allow scroll inside menu if height is small */
                     }
 
                     .navbar-links li {
@@ -274,16 +253,18 @@ const Navbarup = () => {
                     .navbar-register-button {
                         margin: 20px auto 10px; 
                         display: block;
+                        width: 80%; /* Make button wider on mobile menu */
                     }
                 }
                 
-                /* 4. Small Mobile (Up to 480px) */
+                /* Small Mobile Styling */
                 @media (max-width: 480px) {
                     .navbar {
                         height: 60px;
+                        padding: 10px;
                     }
                     .logo-image {
-                        height: 35px; /* Adjust for smaller screens if needed */
+                        height: 40px; 
                     }
                     .menu-toggle {
                         font-size: 1.5rem;
@@ -294,13 +275,6 @@ const Navbarup = () => {
                     .navbar-links li a {
                         font-size: 1rem;
                         padding: 12px 0;
-                    }
-                }
-
-                /* 5. Very Small Mobile (Up to 390px) */
-                @media (max-width: 390px) {
-                    .navbar-links.open {
-                        padding: 10px 0;
                     }
                 }
             `}</style>

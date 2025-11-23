@@ -3,8 +3,11 @@ import React from 'react';
 // --- Custom Components ---
 
 // Component for Core Services/Features
-const ServiceCard = ({ number, title, content, points }) => (
-    <div className="service-card">
+const ServiceCard = ({ number, title, content, points, delay }) => (
+    <div 
+        className="service-card"
+        style={{ '--delay': `${delay}ms` }}
+    >
         <div className="card-header">
             <span className="card-number">{number}</span>
             <h3 className="card-title">{title}</h3>
@@ -33,11 +36,12 @@ const SimpleListSection = ({ title, items }) => (
 );
 
 // Component for CTA Links
-const CTALink = ({ title, description, isPrimary = false }) => (
+const CTALink = ({ title, description, isPrimary = false, delay }) => (
     <a 
         href="#" 
         onClick={(e) => { e.preventDefault(); console.log(`${title} clicked`); }}
         className={`cta-link ${isPrimary ? 'cta-primary' : 'cta-secondary'}`}
+        style={{ '--delay': `${delay}ms` }}
     >
         <h4 className="link-title">{title}</h4>
         <p className="link-description">{description}</p>
@@ -138,74 +142,69 @@ const HealthcareSolutionsPage = () => {
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
                 
                 :root {
-                    /* Base Theme Colors (BLUE - General Tevacraft/Non-Healthcare Sections) */
-                    --primary-color: #0b5cff; 
+                    /* Green Theme Variables */
+                    --brand-color: #4CAF50; /* Green */
+                    --secondary-color: #2E7D32;
+                    --text-dark: #1f2937; 
                     --text-light: #f0f4f8;
-                    --text-dark: #1f2937;
-                    --bg-dark: #071a33; 
                     --bg-light: #ffffff;
+                    --bg-subtle: #f7f9fb;
                     --muted-text: #4b5563;
-                    --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.05);
-                    
-                    /* 💚 Healthcare Theme Colors (GREEN - For this Page's Focus) */
-                    --hc-primary: #4CAF50;    /* Bright Green - Main Accent/Background */
-                    --hc-secondary: #00A389;  /* Deep Teal - Hover/Darker Accent */
-                    --hc-bg-light: #e8f5e9;   /* Very Light Green - Subtle Background */
-                    --hc-text-light: #ffffff;
-                    --hc-text-dark: var(--text-dark);
+                    --border-radius: 12px;
+                    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.08);
+                    --hero-glow-color: rgba(255, 255, 255, 0.9);
+                    --accent-yellow: #FFC300;
+                    --shadow-premium: 0 15px 40px rgba(0, 0, 0, 0.15);
                 }
 
                 * { box-sizing: border-box; margin: 0; padding: 0; }
                 body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
                 .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 80px 0; }
-                .section-title { font-size: 2.8rem; font-weight: 800; color: var(--hc-text-dark); text-align: center; margin-bottom: 50px; }
+                .section-title { font-size: 2.8rem; font-weight: 800; color: var(--text-dark); text-align: center; margin-bottom: 50px; }
                 .divider { height: 1px; background-color: #e0e0e0; margin: 40px 0; }
 
-                /* --- 1. Hero Section (Green Theme Applied as requested in previous steps for high contrast) --- */
+                /* --- 1. Hero Section (Green Gradient) --- */
                 .hc-hero-section {
-                    background-color: var(--hc-primary); /* Bright Green Background */
-                    color: var(--hc-text-light); /* White Text */
-                    padding: 120px 5%; 
+                    color: var(--text-light);
+                    padding: 130px 5%; 
                     text-align: center;
                     position: relative;
+                    overflow: hidden; 
+                    animation: fadeIn 1.2s ease-in-out;
+                    
+                    /* Green Linear Gradient Background */
+                    background: linear-gradient(135deg, #0a150a 0%, #1e4d2b 60%, #4CAF50 100%);
                 }
+                
+                /* Hero Animations */
+                @keyframes robotToolsFlow1 { 0% { background-position: 0 0; } 100% { background-position: 200px 200px; } }
+                @keyframes robotToolsFlow2 { 0% { background-position: 0 0; } 100% { background-position: -150px 150px; } }
+                @keyframes teachingSpotlight { 0% { left: -20%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } 50% { left: 50%; transform: translateY(-50%) rotate(-5deg); opacity: 1; } 100% { left: 120%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } }
+                @keyframes quantumPulse { 0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(3); } 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6); } }
+                @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+                /* Overlay Elements */
                 .hc-hero-section::before {
-                    content: '';
-                    position: absolute;
-                    top: 0; left: 0; right: 0; bottom: 0;
-                    background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 5px, transparent 5px, transparent 15px);
-                    opacity: 0.8;
+                    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; pointer-events: none;
+                    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px);
+                    background-size: 100px 100px, 100px 100px; animation: robotToolsFlow1 30s linear infinite, robotToolsFlow2 40s linear reverse infinite;
                 }
-                .hc-hero-content {
-                    max-width: 800px;
-                    margin: 0 auto;
-                    position: relative;
-                    z-index: 2;
+                .hc-hero-section::after {
+                    content: ''; position: absolute; top: 50%; left: -20%; width: 40%; height: 100%; transform: translateY(-50%) rotate(10deg);
+                    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 10%, rgba(76, 175, 80, 0.3) 50%, rgba(255, 255, 255, 0.1) 90%, transparent);
+                    filter: blur(80px); z-index: 2; opacity: 0.8; pointer-events: none; animation: teachingSpotlight 25s ease-in-out infinite alternate;
                 }
-                .hc-hero-tagline {
-                    font-size: 1rem;
-                    font-weight: 700;
-                    letter-spacing: 2px;
-                    margin-bottom: 15px;
-                    text-transform: uppercase;
-                    opacity: 0.8;
+                
+                .hc-hero-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 10; }
+                .hc-hero-content::before {
+                    content: ''; position: absolute; top: 50%; left: 50%; width: 50px; height: 50px;
+                    background: radial-gradient(circle, var(--hero-glow-color) 0%, transparent 70%); border-radius: 50%; transform: translate(-50%, -50%); z-index: 5; pointer-events: none; animation: quantumPulse 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
                 }
-                .hc-hero-title {
-                    font-size: 3.5rem; 
-                    font-weight: 900;
-                    margin-bottom: 20px;
-                    line-height: 1.1;
-                }
-                .hc-hero-subtitle {
-                    font-size: 1.5rem;
-                    font-weight: 600;
-                    margin-bottom: 30px;
-                }
-                .hc-hero-description {
-                    font-size: 1.15rem;
-                    margin-bottom: 40px;
-                    opacity: 0.9;
-                }
+
+                .hc-hero-tagline { font-size: 1rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; opacity: 0.8; }
+                .hc-hero-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 20px; line-height: 1.1; animation: slideInDown 1.5s ease-out; }
+                .hc-hero-subtitle { font-size: 1.5rem; font-weight: 600; margin-bottom: 30px; animation: slideInDown 1.8s ease-out; }
+                .hc-hero-description { font-size: 1.15rem; margin-bottom: 40px; opacity: 0.9; }
 
                 /* --- 2. Core Services Section --- */
                 .services-grid {
@@ -214,201 +213,121 @@ const HealthcareSolutionsPage = () => {
                     gap: 35px;
                     padding-top: 20px;
                 }
+                
+                @keyframes fadeInRise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
                 .service-card {
-                    background-color: var(--hc-bg-light); 
-                    border: 1px solid #c8e6c9;
+                    background-color: var(--bg-subtle); 
                     border-radius: 12px;
                     padding: 30px;
-                    transition: transform 0.3s, box-shadow 0.3s;
-                    box-shadow: var(--shadow-light);
+                    box-shadow: var(--shadow-medium);
                     height: 100%;
-                }
-                .service-card:hover {
-                    transform: translateY(-8px);
-                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-                }
-                .card-header {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 15px;
-                }
-                .card-number {
-                    background-color: var(--hc-primary);
-                    color: white;
-                    width: 35px;
-                    height: 35px;
-                    border-radius: 50%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-weight: 700;
-                    font-size: 1.1rem;
-                    margin-right: 15px;
-                }
-                .card-title {
-                    font-size: 1.5rem;
-                    font-weight: 700;
-                    color: var(--hc-primary);
-                }
-                .card-content {
-                    color: var(--muted-text);
-                    margin-bottom: 15px;
-                }
-                .service-points {
-                    list-style: none;
-                    padding-left: 0;
-                }
-                .point-item {
-                    font-size: 0.95rem;
-                    padding-left: 20px;
-                    position: relative;
-                    margin-bottom: 8px;
-                    color: var(--text-dark);
-                }
-                .point-item::before {
-                    content: '✓';
-                    position: absolute;
-                    left: 0;
-                    color: var(--hc-secondary);
-                    font-weight: 800;
+                    border: 1px solid #e0e0e0;
+                    transition: transform 0.3s, box-shadow 0.3s;
+                    
+                    position: relative; overflow: hidden; z-index: 1;
+                    opacity: 0; transform: translateY(30px); animation: fadeInRise 0.8s forwards; animation-delay: var(--delay);
                 }
                 
-                /* --- 3. Other Information Sections (WHY TEVACRAFT, INDUSTRIES, PROJECTS) --- */
+                /* Hover Gradient Fill */
+                .service-card::before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%); transition: height 0.4s ease-in-out; z-index: -1; }
+                .service-card:hover::before { height: 100%; }
+                .service-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-premium); border-color: transparent; }
+
+                .card-header { display: flex; align-items: center; margin-bottom: 15px; }
+                
+                .card-number { background-color: var(--brand-color); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 700; font-size: 1.1rem; margin-right: 15px; transition: all 0.3s ease; }
+                .service-card:hover .card-number { background-color: white; color: var(--brand-color); }
+                
+                .card-title { font-size: 1.5rem; font-weight: 700; color: var(--brand-color); transition: color 0.3s ease; }
+                .service-card:hover .card-title { color: white; }
+                
+                .card-content { color: var(--muted-text); margin-bottom: 15px; transition: color 0.3s ease; }
+                .service-card:hover .card-content { color: white; }
+                
+                .service-points { list-style: none; padding-left: 0; }
+                .point-item { font-size: 0.95rem; padding-left: 20px; position: relative; margin-bottom: 8px; color: var(--text-dark); transition: color 0.3s ease; }
+                .service-card:hover .point-item { color: white; }
+                
+                .point-item::before { content: '✓'; position: absolute; left: 0; color: var(--brand-color); font-weight: 800; transition: color 0.3s ease; }
+                .service-card:hover .point-item::before { color: var(--accent-yellow); }
+                
+                /* --- 3. Other Information Sections --- */
                 .info-section {
-                    background-color: var(--hc-bg-light);
+                    background-color: var(--bg-subtle);
                     padding: 60px 5%;
                     margin-top: 50px;
                     border-radius: 15px;
                 }
-                .list-title {
-                    font-size: 2.2rem;
-                    font-weight: 800;
-                    color: var(--hc-primary);
-                    margin-bottom: 30px;
-                    text-align: center;
-                }
-                .info-list {
-                    list-style: none;
-                    padding: 0;
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-                    gap: 20px;
-                }
+                .list-title { font-size: 2.2rem; font-weight: 800; color: var(--brand-color); margin-bottom: 30px; text-align: center; }
+                .info-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+                
                 .list-item {
                     background-color: white;
                     padding: 18px 25px;
-                    border-left: 5px solid var(--hc-secondary);
+                    border-left: 5px solid var(--secondary-color);
                     border-radius: 6px;
-                    box-shadow: var(--shadow-light);
+                    box-shadow: var(--shadow-medium);
                     font-weight: 600;
                     color: var(--text-dark);
+                    transition: transform 0.3s;
                 }
+                .list-item:hover { transform: translateX(10px); }
                 
                 /* --- 4. Vision & Contact Section --- */
-                .vision-section {
-                    text-align: center;
-                    padding: 60px 5%;
-                }
-                .vision-quote {
-                    font-size: 1.8rem;
-                    font-style: italic;
-                    color: var(--hc-secondary);
-                    margin-bottom: 20px;
-                    max-width: 900px;
-                    margin-left: auto;
-                    margin-right: auto;
-                }
-                .vision-text {
-                    font-size: 1.1rem;
-                    color: var(--muted-text);
-                    max-width: 800px;
-                    margin: 0 auto 50px;
-                }
+                .vision-section { text-align: center; padding: 60px 5%; }
+                .vision-quote { font-size: 1.8rem; font-style: italic; color: var(--secondary-color); margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; }
+                .vision-text { font-size: 1.1rem; color: var(--muted-text); max-width: 800px; margin: 0 auto 50px; }
                 
                 /* --- 5. Partner With Us (Contact Info) --- */
-                .contact-info {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: center;
-                    gap: 30px;
-                    margin-bottom: 50px;
-                }
-                .contact-item {
-                    padding: 20px 30px;
-                    border: 1px solid #e0e0e0;
-                    border-radius: 8px;
-                    background-color: #f7f9fb;
-                    text-align: left;
-                    font-weight: 600;
-                    min-width: 250px;
-                }
-                .contact-label {
-                    color: var(--hc-primary);
-                    display: block;
-                    font-size: 0.9rem;
-                    margin-bottom: 5px;
-                }
-                .contact-value {
-                    font-size: 1.1rem;
-                    color: var(--text-dark);
-                }
+                .contact-info { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-bottom: 50px; }
+                .contact-item { padding: 20px 30px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f7f9fb; text-align: left; font-weight: 600; min-width: 250px; }
+                .contact-label { color: var(--brand-color); display: block; font-size: 0.9rem; margin-bottom: 5px; }
+                .contact-value { font-size: 1.1rem; color: var(--text-dark); }
 
                 /* --- 6. Call To Action (CTA) --- */
-                .cta-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 25px;
-                    margin-top: 50px;
-                }
+                .cta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 50px; }
+                
                 .cta-link {
-                    background-color: var(--hc-bg-light);
+                    background-color: var(--bg-subtle);
                     border-radius: 10px;
                     padding: 30px;
                     text-decoration: none;
-                    transition: background-color 0.3s, transform 0.3s;
+                    transition: transform 0.3s, box-shadow 0.3s;
                     border: 1px solid #d4e7d5;
+                    position: relative; overflow: hidden; z-index: 1;
+                    opacity: 0; transform: translateY(30px); animation: fadeInRise 0.8s forwards; animation-delay: var(--delay);
                 }
-                .cta-link:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 10px 20px rgba(76, 175, 80, 0.2);
-                }
-                .cta-primary {
-                    background-color: var(--hc-primary);
-                    color: white;
-                }
-                .cta-primary:hover {
-                    background-color: var(--hc-secondary);
-                }
-                .cta-primary .link-title, .cta-primary .link-description {
-                    color: white;
-                }
+                
+                .cta-link::before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%); transition: height 0.4s ease-in-out; z-index: -1; }
+                .cta-link:hover::before { height: 100%; }
+                .cta-link:hover { transform: translateY(-5px); box-shadow: var(--shadow-premium); border-color: transparent; }
+                
+                .cta-primary { background-color: var(--brand-color); color: white; }
+                .cta-primary::before { background: linear-gradient(135deg, #2E7D32 0%, #1e4d2b 100%); } /* Darker gradient for primary */
 
-                .link-title {
-                    font-size: 1.3rem;
-                    font-weight: 800;
-                    margin-bottom: 8px;
-                    color: var(--hc-primary);
-                }
-                .link-description {
-                    font-size: 0.95rem;
-                    color: var(--muted-text);
-                }
+                .link-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; color: var(--brand-color); transition: color 0.3s ease; }
+                .cta-primary .link-title { color: white; }
+                .cta-link:hover .link-title { color: white; }
+                
+                .link-description { font-size: 0.95rem; color: var(--muted-text); transition: color 0.3s ease; }
+                .cta-primary .link-description { color: rgba(255,255,255,0.9); }
+                .cta-link:hover .link-description { color: white; }
 
-                /* --- SEO Description (Hidden, for visibility only) --- */
-                .seo-description {
-                    display: none; 
-                }
+                .seo-description { display: none; }
 
                 /* --- Media Queries --- */
                 @media (max-width: 768px) {
                     .hc-hero-title { font-size: 2.5rem; }
                     .hc-hero-subtitle { font-size: 1.2rem; }
-                    .section-title { font-size: 2.2rem; }
                     .info-list { grid-template-columns: 1fr; }
                     .services-grid, .cta-grid { grid-template-columns: 1fr; }
                     .contact-info { flex-direction: column; align-items: stretch; }
                     .contact-item { text-align: center; }
                     .vision-quote { font-size: 1.4rem; }
+                }
+                @media (max-width: 600px) {
+                    .hc-hero-section::after, .hc-hero-section::before, .hc-hero-content::before { display: none; }
                 }
             `}</style>
 
@@ -433,8 +352,12 @@ const HealthcareSolutionsPage = () => {
                 <div className="container">
                     <h2 className="section-title">OUR CORE HEALTHCARE AI SERVICES</h2>
                     <div className="services-grid">
-                        {services.map(service => (
-                            <ServiceCard key={service.number} {...service} />
+                        {services.map((service, index) => (
+                            <ServiceCard 
+                                key={service.number} 
+                                {...service} 
+                                delay={index * 50}
+                            />
                         ))}
                     </div>
                 </div>
@@ -495,14 +418,17 @@ const HealthcareSolutionsPage = () => {
                             title="Schedule a Free Consultation →" 
                             description="Book a call to discuss how AI can transform your medical workflow." 
                             isPrimary={true} 
+                            delay={0}
                         />
                         <CTALink 
                             title="Become a Data Partner →" 
                             description="Join our hospital & diagnostic center network to co-develop anonymized medical datasets ethically." 
+                            delay={100}
                         />
                         <CTALink 
                             title="Request a Demo →" 
                             description="See how our annotation and validation pipeline works in action." 
+                            delay={200}
                         />
                     </div>
                 </div>

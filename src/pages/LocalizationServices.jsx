@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// --- Reusable Component: Accordion Item (from previous FAQ solution) ---
+// --- Reusable Component: Accordion Item ---
 const AccordionItem = ({ question, answer, isOpen, onToggle }) => (
     <div className="faq-item">
         <button className="faq-question" onClick={onToggle} aria-expanded={isOpen}>
@@ -14,8 +14,11 @@ const AccordionItem = ({ question, answer, isOpen, onToggle }) => (
 );
 
 // --- Reusable Component: Service Card for the grid ---
-const ServiceCard = ({ number, title, services }) => (
-    <div className="service-card">
+const ServiceCard = ({ number, title, services, delay }) => (
+    <div 
+        className="service-card"
+        style={{ '--delay': `${delay}ms` }}
+    >
         <div className="service-header">
             <span className="service-number">{number}</span>
             <h3 className="service-title">{title}</h3>
@@ -48,7 +51,8 @@ const LocalizationServices = () => {
                 "Continuous learning and improvement",
                 "Ideal for internal documentation and general content"
             ],
-            icon: "🤖"
+            icon: "🤖",
+            delay: 0
         },
         {
             title: "AI-Assisted Human Translation",
@@ -58,7 +62,8 @@ const LocalizationServices = () => {
                 "Optimal balance of speed and quality",
                 "Best for marketing materials and customer-facing content"
             ],
-            icon: "🧠"
+            icon: "🧠",
+            delay: 100
         },
         {
             title: "Human-Led Premium Translation",
@@ -68,7 +73,8 @@ const LocalizationServices = () => {
                 "Maximum accuracy and cultural authenticity",
                 "Recommended for legal, medical, and high-stakes content"
             ],
-            icon: "🧑‍💻"
+            icon: "🧑‍💻",
+            delay: 200
         }
     ];
 
@@ -160,9 +166,10 @@ const LocalizationServices = () => {
     return (
         <div className="localization-services-wrapper">
             <style jsx>{`
-                /* --- Color Variables (Consistent) --- */
+                /* --- Color Variables (Green Theme) --- */
                 :root {
-                    --brand-color: #0b5cff; 
+                    --brand-color: #4CAF50; /* Green */
+                    --secondary-color: #2E7D32;
                     --text-dark: #1f2937; 
                     --text-light: #f0f4f8;
                     --bg-light: #ffffff;
@@ -170,6 +177,9 @@ const LocalizationServices = () => {
                     --muted-text: #4b5563;
                     --border-radius: 12px;
                     --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.08);
+                    --hero-glow-color: rgba(255, 255, 255, 0.9);
+                    --accent-yellow: #FFC300; 
+                    --shadow-premium: 0 15px 40px rgba(0, 0, 0, 0.15);
                 }
 
                 /* --- General Layout --- */
@@ -185,33 +195,51 @@ const LocalizationServices = () => {
                     padding: 60px 0;
                 }
 
-                /* --- Hero Section --- */
+                /* ========================================= */
+                /* --- HERO SECTION (Green Gradient) --- */
+                /* ========================================= */
                 .hero-section {
+                    color: var(--text-light);
+                    padding: 130px 5%; 
                     text-align: center;
-                    padding: 80px 0;
-                    background-color: var(--bg-subtle);
-                    margin-bottom: 60px;
-                    border-bottom: 5px solid var(--brand-color);
-                }
-                .hero-headline {
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    color: var(--brand-color);
-                    margin: 0;
-                }
-                .hero-subheadline {
-                    font-size: 1.5rem;
-                    color: var(--text-dark);
-                    margin: 10px 0 30px 0;
-                }
-                .hero-intro {
-                    font-size: 1.1rem;
-                    color: var(--muted-text);
-                    max-width: 800px;
-                    margin: 0 auto;
-                    line-height: 1.7;
+                    position: relative;
+                    overflow: hidden; 
+                    animation: fadeIn 1.2s ease-in-out;
+                    
+                    /* Green Linear Gradient */
+                    background: linear-gradient(135deg, #0a150a 0%, #1e4d2b 60%, #4CAF50 100%);
                 }
                 
+                /* Hero Animations */
+                @keyframes robotToolsFlow1 { 0% { background-position: 0 0; } 100% { background-position: 200px 200px; } }
+                @keyframes robotToolsFlow2 { 0% { background-position: 0 0; } 100% { background-position: -150px 150px; } }
+                @keyframes teachingSpotlight { 0% { left: -20%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } 50% { left: 50%; transform: translateY(-50%) rotate(-5deg); opacity: 1; } 100% { left: 120%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } }
+                @keyframes quantumPulse { 0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(3); } 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6); } }
+                @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+                /* Overlay Elements */
+                .hero-section::before {
+                    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; pointer-events: none;
+                    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px);
+                    background-size: 100px 100px, 100px 100px; animation: robotToolsFlow1 30s linear infinite, robotToolsFlow2 40s linear reverse infinite;
+                }
+                .hero-section::after {
+                    content: ''; position: absolute; top: 50%; left: -20%; width: 40%; height: 100%; transform: translateY(-50%) rotate(10deg);
+                    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 10%, rgba(76, 175, 80, 0.3) 50%, rgba(255, 255, 255, 0.1) 90%, transparent);
+                    filter: blur(80px); z-index: 2; opacity: 0.8; pointer-events: none; animation: teachingSpotlight 25s ease-in-out infinite alternate;
+                }
+                .hero-content { max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
+                .hero-content::before {
+                    content: ''; position: absolute; top: 50%; left: 50%; width: 50px; height: 50px;
+                    background: radial-gradient(circle, var(--hero-glow-color) 0%, transparent 70%); border-radius: 50%; transform: translate(-50%, -50%); z-index: 5; pointer-events: none; animation: quantumPulse 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+                }
+                .hero-headline { font-size: 4.5rem; font-weight: 900; margin-bottom: 25px; line-height: 1.1; animation: slideInDown 1.5s ease-out; }
+                .hero-subheadline { font-size: 1.45rem; font-weight: 300; margin-bottom: 50px; opacity: 0.95; animation: slideInDown 1.8s ease-out; }
+                .hero-intro { font-size: 1.1rem; color: var(--text-light); max-width: 800px; margin: 0 auto; line-height: 1.7; opacity: 0.9; }
+                
+                .hero-grid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.3; background-image: linear-gradient(to right, rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 30px 30px, 30px 30px; animation: gridFlow 60s linear infinite; }
+                @keyframes gridFlow { 0% { background-position: 0 0; } 100% { background-position: 300px 300px; } }
+
                 /* --- Standard Section Titles --- */
                 .section-title {
                     font-size: 2.5rem;
@@ -229,7 +257,7 @@ const LocalizationServices = () => {
                     text-transform: uppercase;
                 }
                 
-                /* --- Strategic Partner Section (2-Column Layout) --- */
+                /* --- Strategic Partner Section --- */
                 .partner-section {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
@@ -237,78 +265,48 @@ const LocalizationServices = () => {
                     margin-bottom: 80px;
                     align-items: center;
                 }
-                .partner-content h2 {
-                    font-size: 2rem;
-                    font-weight: 700;
-                    margin-bottom: 15px;
-                }
-                .partner-content p {
-                    font-size: 1.1rem;
-                    line-height: 1.7;
-                    color: var(--muted-text);
-                    margin-bottom: 20px;
-                }
-                .key-differentiators {
-                    list-style: none;
-                    padding: 0;
-                }
-                .key-differentiators li {
-                    font-size: 1rem;
-                    margin-bottom: 10px;
-                    padding-left: 25px;
-                    position: relative;
-                    font-weight: 500;
-                }
-                .key-differentiators li::before {
-                    content: '⭐';
-                    position: absolute;
-                    left: 0;
-                    color: var(--brand-color);
-                }
+                .partner-content h2 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
+                .partner-content p { font-size: 1.1rem; line-height: 1.7; color: var(--muted-text); margin-bottom: 20px; }
+                .key-differentiators { list-style: none; padding: 0; }
+                .key-differentiators li { font-size: 1rem; margin-bottom: 10px; padding-left: 25px; position: relative; font-weight: 500; }
+                .key-differentiators li::before { content: '⭐'; position: absolute; left: 0; color: var(--brand-color); }
 
-                /* --- Hybrid Approach Cards --- */
+                /* --- Hybrid Approach Cards (WITH HOVER) --- */
                 .hybrid-cards-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                     gap: 30px;
                     margin-bottom: 80px;
                 }
+                
+                @keyframes fadeInRise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
                 .hybrid-card {
-                    background-color: var(--bg-light);
+                    background-color: var(--bg-subtle);
                     padding: 30px;
                     border-radius: var(--border-radius);
                     box-shadow: var(--shadow-medium);
                     border-bottom: 5px solid var(--brand-color);
+                    transition: transform 0.3s, box-shadow 0.3s;
+                    position: relative; overflow: hidden; z-index: 1;
+                    opacity: 0; transform: translateY(30px); animation: fadeInRise 0.8s forwards; animation-delay: var(--delay);
                 }
-                .hybrid-icon {
-                    font-size: 2.5rem;
-                    margin-bottom: 15px;
-                }
-                .hybrid-title {
-                    font-size: 1.4rem;
-                    font-weight: 700;
-                    margin: 0 0 15px 0;
-                }
-                .hybrid-features-list {
-                    list-style: none;
-                    padding: 0;
-                }
-                .hybrid-features-list li {
-                    font-size: 0.95rem;
-                    color: var(--muted-text);
-                    margin-bottom: 8px;
-                    padding-left: 20px;
-                    position: relative;
-                }
-                .hybrid-features-list li::before {
-                    content: '✓';
-                    position: absolute;
-                    left: 0;
-                    color: var(--brand-color);
-                    font-weight: bold;
-                }
+                
+                /* Hover Gradient */
+                .hybrid-card::before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%); transition: height 0.4s ease-in-out; z-index: -1; }
+                .hybrid-card:hover::before { height: 100%; }
+                .hybrid-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-premium); border-bottom: 5px solid transparent; }
+                
+                .hybrid-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+                .hybrid-title { font-size: 1.4rem; font-weight: 700; margin: 0 0 15px 0; transition: color 0.3s ease; }
+                .hybrid-card:hover .hybrid-title { color: #ffffff; }
+                .hybrid-features-list { list-style: none; padding: 0; }
+                .hybrid-features-list li { font-size: 0.95rem; color: var(--muted-text); margin-bottom: 8px; padding-left: 20px; position: relative; transition: color 0.3s ease; }
+                .hybrid-card:hover .hybrid-features-list li { color: #ffffff; }
+                .hybrid-features-list li::before { content: '✓'; position: absolute; left: 0; color: var(--brand-color); font-weight: bold; transition: color 0.3s ease; }
+                .hybrid-card:hover .hybrid-features-list li::before { color: var(--accent-yellow); }
 
-                /* --- Comprehensive Services Grid --- */
+                /* --- Comprehensive Services Grid (WITH HOVER) --- */
                 .services-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -318,44 +316,31 @@ const LocalizationServices = () => {
                     background-color: var(--bg-subtle);
                     padding: 30px;
                     border-radius: var(--border-radius);
-                    box-shadow: var(--shadow-light);
+                    box-shadow: var(--shadow-medium);
                     transition: transform 0.3s;
+                    position: relative; overflow: hidden; z-index: 1;
+                    opacity: 0; transform: translateY(30px); animation: fadeInRise 0.8s forwards; animation-delay: var(--delay);
                 }
-                .service-card:hover {
-                    transform: translateY(-5px);
-                }
-                .service-header {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 15px;
-                    border-bottom: 2px solid #ddd;
-                    padding-bottom: 10px;
-                }
-                .service-number {
-                    font-size: 1.8rem;
-                    font-weight: 900;
-                    color: var(--brand-color);
-                    margin-right: 15px;
-                }
-                .service-title {
-                    font-size: 1.25rem;
-                    font-weight: 700;
-                    margin: 0;
-                }
-                .sub-header {
-                    font-size: 0.9rem;
-                    font-weight: 600;
-                    color: var(--text-dark);
-                    margin-bottom: 10px;
-                }
-                .service-list {
-                    padding-left: 20px;
-                    font-size: 0.95rem;
-                    color: var(--muted-text);
-                    line-height: 1.6;
-                }
+                .service-card::before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%); transition: height 0.4s ease-in-out; z-index: -1; }
+                .service-card:hover::before { height: 100%; }
+                .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-premium); }
                 
-                /* --- Success Stories Grid --- */
+                .service-header { display: flex; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #ddd; padding-bottom: 10px; transition: border-color 0.3s ease; }
+                .service-card:hover .service-header { border-bottom: 2px solid rgba(255,255,255,0.3); }
+                
+                .service-number { font-size: 1.8rem; font-weight: 900; color: var(--brand-color); margin-right: 15px; transition: color 0.3s ease; }
+                .service-card:hover .service-number { color: var(--accent-yellow); }
+                
+                .service-title { font-size: 1.25rem; font-weight: 700; margin: 0; transition: color 0.3s ease; }
+                .service-card:hover .service-title { color: #ffffff; }
+                
+                .sub-header { font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin-bottom: 10px; transition: color 0.3s ease; }
+                .service-card:hover .sub-header { color: #ffffff; }
+                
+                .service-list { padding-left: 20px; font-size: 0.95rem; color: var(--muted-text); line-height: 1.6; transition: color 0.3s ease; }
+                .service-card:hover .service-list { color: #ffffff; }
+                
+                /* --- Success Stories Grid (WITH HOVER) --- */
                 .success-stories-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -363,51 +348,40 @@ const LocalizationServices = () => {
                     margin-bottom: 80px;
                 }
                 .story-card {
-                    background-color: var(--bg-light);
+                    background-color: var(--bg-subtle);
                     padding: 30px;
                     border-radius: var(--border-radius);
                     box-shadow: var(--shadow-medium);
                     border-left: 6px solid var(--brand-color);
+                    transition: transform 0.3s;
+                    position: relative; overflow: hidden; z-index: 1;
                 }
-                .story-title {
-                    font-size: 1.4rem;
-                    font-weight: 700;
-                    color: var(--brand-color);
-                    margin-top: 0;
-                }
-                .story-challenge, .story-solution, .story-results {
-                    margin-bottom: 20px;
-                }
-                .story-challenge p, .story-solution p {
-                    font-style: italic;
-                    color: var(--muted-text);
-                    font-size: 1rem;
-                    margin: 5px 0 0 0;
-                }
-                .story-results h4 {
-                    color: #28a745; /* Success Green */
-                    font-size: 1.1rem;
-                    margin-bottom: 10px;
-                }
-                .story-results ul {
-                    padding-left: 20px;
-                    font-size: 0.95rem;
-                    color: var(--text-dark);
-                }
+                .story-card::before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%); transition: height 0.4s ease-in-out; z-index: -1; }
+                .story-card:hover::before { height: 100%; }
+                .story-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-premium); border-left: 6px solid transparent; }
+                
+                .story-title { font-size: 1.4rem; font-weight: 700; color: var(--brand-color); margin-top: 0; transition: color 0.3s ease; }
+                .story-card:hover .story-title { color: #ffffff; }
+                
+                .story-challenge p, .story-solution p { font-style: italic; color: var(--muted-text); font-size: 1rem; margin: 5px 0 0 0; transition: color 0.3s ease; }
+                .story-card:hover .story-challenge p, .story-card:hover .story-solution p { color: #ffffff; }
+                
+                .story-results h4 { color: #28a745; font-size: 1.1rem; margin-bottom: 10px; transition: color 0.3s ease; }
+                .story-card:hover .story-results h4 { color: var(--accent-yellow); }
+                
+                .story-results ul { padding-left: 20px; font-size: 0.95rem; color: var(--text-dark); transition: color 0.3s ease; }
+                .story-card:hover .story-results ul { color: #ffffff; }
                 
                 /* --- CTA Section --- */
                 .cta-section {
                     text-align: center;
-                    padding: 40px;
-                    background-color: var(--bg-subtle);
+                    padding: 60px 40px;
+                    background-color: var(--secondary-color); /* Dark Green bg */
+                    color: white;
                     border-radius: var(--border-radius);
                     margin-top: 60px;
                 }
-                .cta-headline {
-                    font-size: 2rem;
-                    color: var(--text-dark);
-                    margin-bottom: 15px;
-                }
+                .cta-headline { font-size: 2rem; color: white; margin-bottom: 15px; }
                 .cta-buttons a {
                     display: inline-block;
                     padding: 12px 30px;
@@ -417,129 +391,56 @@ const LocalizationServices = () => {
                     font-weight: 600;
                     transition: all 0.3s;
                 }
-                .btn-primary {
-                    background-color: var(--brand-color);
-                    color: var(--bg-light);
-                    border: 2px solid var(--brand-color);
-                }
-                .btn-primary:hover {
-                    background-color: #0045e0;
-                }
-                .btn-secondary {
-                    background-color: transparent;
-                    color: var(--brand-color);
-                    border: 2px solid var(--brand-color);
-                }
-                .btn-secondary:hover {
-                    background-color: var(--brand-color);
-                    color: var(--bg-light);
-                }
-                .contact-details-cta {
-                    margin-top: 20px;
-                    color: var(--muted-text);
-                }
-                .contact-details-cta a {
-                    color: var(--brand-color);
-                    font-weight: 600;
-                    text-decoration: none;
-                }
+                .btn-primary { background-color: white; color: var(--brand-color); border: 2px solid white; }
+                .btn-primary:hover { background-color: #f0f0f0; }
+                .btn-secondary { background-color: transparent; color: white; border: 2px solid white; }
+                .btn-secondary:hover { background-color: rgba(255,255,255,0.1); }
+                
+                .contact-details-cta { margin-top: 20px; color: rgba(255,255,255,0.9); }
+                .contact-details-cta a { color: white; font-weight: 600; text-decoration: none; }
 
-                /* --- FAQ Styling (Re-used) --- */
-                .faq-list {
-                    max-width: 900px;
-                    margin: 0 auto;
-                    margin-bottom: 80px;
-                }
-                .faq-item {
-                    border: 1px solid #ddd;
-                    margin-bottom: 10px;
-                    border-radius: var(--border-radius);
-                    overflow: hidden;
-                }
+                /* --- FAQ Styling --- */
+                .faq-list { max-width: 900px; margin: 0 auto; margin-bottom: 80px; }
+                .faq-item { border: 1px solid #ddd; margin-bottom: 10px; border-radius: var(--border-radius); overflow: hidden; }
                 .faq-question {
-                    width: 100%;
-                    background-color: var(--bg-light);
-                    color: var(--text-dark);
-                    text-align: left;
-                    padding: 18px 25px;
-                    border: none;
-                    cursor: pointer;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    font-size: 1.1rem;
-                    font-weight: 600;
+                    width: 100%; background-color: var(--bg-light); color: var(--text-dark); text-align: left; padding: 18px 25px; border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 600;
                 }
-                .faq-question[aria-expanded="true"] {
-                    background-color: var(--brand-color);
-                    color: white;
-                }
-                .faq-answer-container {
-                    max-height: 0;
-                    overflow: hidden;
-                    transition: max-height 0.4s ease-in-out;
-                    background-color: var(--bg-subtle);
-                }
-                .faq-answer-container.open {
-                    max-height: 500px;
-                }
-                .faq-answer {
-                    padding: 15px 25px 25px;
-                    font-size: 1rem;
-                    color: var(--muted-text);
-                    line-height: 1.6;
-                    margin: 0;
-                }
-                .toggle-icon {
-                    font-size: 1.5rem;
-                    margin-left: 20px;
-                    line-height: 1;
-                }
+                .faq-question[aria-expanded="true"] { background-color: var(--brand-color); color: white; }
+                .faq-answer-container { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; background-color: var(--bg-subtle); }
+                .faq-answer-container.open { max-height: 500px; }
+                .faq-answer { padding: 15px 25px 25px; font-size: 1rem; color: var(--muted-text); line-height: 1.6; margin: 0; }
+                .toggle-icon { font-size: 1.5rem; margin-left: 20px; line-height: 1; }
 
                 /* --- Media Queries --- */
                 @media (max-width: 992px) {
-                    .partner-section {
-                        grid-template-columns: 1fr;
-                        gap: 30px;
-                    }
-                    .hero-headline {
-                        font-size: 2.8rem;
-                    }
-                    .section-title {
-                        font-size: 2rem;
-                    }
+                    .partner-section { grid-template-columns: 1fr; gap: 30px; }
+                    .hero-headline { font-size: 2.8rem; }
+                    .section-title { font-size: 2rem; }
                 }
                 @media (max-width: 600px) {
-                    .services-grid, .hybrid-cards-grid, .success-stories-grid {
-                        grid-template-columns: 1fr;
-                    }
-                    .hero-section {
-                        padding: 40px 0;
-                    }
-                    .hero-headline {
-                        font-size: 2rem;
-                    }
-                    .hero-subheadline {
-                        font-size: 1.2rem;
-                    }
-                    .cta-buttons a {
-                        display: block;
-                        margin: 10px 0;
-                    }
+                    .services-grid, .hybrid-cards-grid, .success-stories-grid { grid-template-columns: 1fr; }
+                    .hero-section { padding: 40px 0; }
+                    .hero-headline { font-size: 2rem; }
+                    .hero-subheadline { font-size: 1.2rem; }
+                    .cta-buttons a { display: block; margin: 10px 0; }
+                    .hero-section::after, .hero-section::before, .hero-grid, .hero-content::before { display: none; }
                 }
             `}</style>
 
             {/* --- HERO SECTION --- */}
             <header className="hero-section">
-                <p className="header-subtitle">AI-POWERED LOCALIZATION SERVICES</p>
-                <h1 className="hero-headline">AI-Powered Localization Services</h1>
-                <h2 className="hero-subheadline">Your Global Voice Starts Here</h2>
-                <p className="hero-intro">
-                    Expanding into global markets requires more than translation – it demands localization that
-                    preserves your brand's voice while resonating with diverse audiences. At Tevacraft AI Systems, 
-                    we combine cutting-edge AI technology with linguistic expertise to deliver localization 
-                    services that are fast, accurate, and culturally authentic.
-                </p>
+                <div className="hero-grid"></div>
+                <div className="hero-content">
+                    <p className="header-subtitle" style={{color: 'rgba(255,255,255,0.8)', marginBottom:'10px'}}>AI-POWERED LOCALIZATION SERVICES</p>
+                    <h1 className="hero-headline">AI-Powered Localization Services</h1>
+                    <h2 className="hero-subheadline">Your Global Voice Starts Here</h2>
+                    <p className="hero-intro">
+                        Expanding into global markets requires more than translation – it demands localization that
+                        preserves your brand's voice while resonating with diverse audiences. At Tevacraft AI Systems, 
+                        we combine cutting-edge AI technology with linguistic expertise to deliver localization 
+                        services that are fast, accurate, and culturally authentic.
+                    </p>
+                </div>
             </header>
 
             <div className="loc-container">
@@ -551,7 +452,7 @@ const LocalizationServices = () => {
                         </h2>
                         <p>
                             For organizations leading the way in global markets, we're more than just a localization 
-                            service provider; we're your **strategic partner** in achieving international success. 
+                            service provider; we're your <strong>strategic partner</strong> in achieving international success. 
                             We understand that breaking language barriers isn't just about converting words; it's about 
                             connecting with audiences authentically across cultures.
                         </p>
@@ -563,11 +464,11 @@ const LocalizationServices = () => {
                     <div>
                         <h2>What Sets Us Apart:</h2>
                         <ul className="key-differentiators">
-                            <li>Deep understanding of **cultural nuances** and market-specific requirements</li>
-                            <li>**Industry-specific expertise** across multiple sectors</li>
-                            <li>**Scalable solutions** that grow with your business</li>
-                            <li>Consistent **brand voice** across all languages and regions</li>
-                            <li>End-to-end **project management and support**</li>
+                            <li>Deep understanding of <strong>cultural nuances</strong> and market-specific requirements</li>
+                            <li><strong>Industry-specific expertise</strong> across multiple sectors</li>
+                            <li><strong>Scalable solutions</strong> that grow with your business</li>
+                            <li>Consistent <strong>brand voice</strong> across all languages and regions</li>
+                            <li>End-to-end <strong>project management and support</strong></li>
                         </ul>
                     </div>
                 </section>
@@ -576,14 +477,15 @@ const LocalizationServices = () => {
                 <section>
                     <p className="section-subtitle-small">The Power of AI-Enhanced Localization</p>
                     <h2 className="section-title">Intelligent Technology Meets Human Expertise</h2>
-                    <p className="hero-intro" style={{marginBottom: '40px'}}>
-                        At Tevacraft AI Systems, we believe in the power of **intelligent localization** – the seamless 
+                    <p className="hero-intro" style={{marginBottom: '40px', color: 'var(--muted-text)'}}>
+                        At Tevacraft AI Systems, we believe in the power of <strong>intelligent localization</strong> – the seamless 
                         integration of AI technology with human linguistic expertise. Our services leverage the strengths 
                         of both, ensuring speed, accuracy, fluency, and cultural relevance.
                     </p>
+
                     <div className="hybrid-cards-grid">
                         {hybridApproachData.map((data, index) => (
-                            <div key={index} className="hybrid-card">
+                            <div key={index} className="hybrid-card" style={{ '--delay': `${index * 100}ms` }}>
                                 <span className="hybrid-icon">{data.icon}</span>
                                 <h3 className="hybrid-title">{data.title}</h3>
                                 <ul className="hybrid-features-list">
@@ -599,12 +501,13 @@ const LocalizationServices = () => {
                     <p className="section-subtitle-small">The Complete Solution for Every Localization Need</p>
                     <h2 className="section-title">Comprehensive Localization Services</h2>
                     <div className="services-grid">
-                        {comprehensiveServices.map((service) => (
+                        {comprehensiveServices.map((service, index) => (
                             <ServiceCard
                                 key={service.number}
                                 number={service.number}
                                 title={service.title}
                                 services={service.services}
+                                delay={index * 50}
                             />
                         ))}
                     </div>
@@ -629,9 +532,9 @@ const LocalizationServices = () => {
                             <div className="story-results">
                                 <h4>Results:</h4>
                                 <ul>
-                                    <li>Launched in 15 markets **on schedule**</li>
-                                    <li>**40% cost savings** compared to fully manual translation</li>
-                                    <li>**180% increase** in international revenue in first year</li>
+                                    <li>Launched in 15 markets <strong>on schedule</strong></li>
+                                    <li><strong>40% cost savings</strong> compared to fully manual translation</li>
+                                    <li><strong>180% increase</strong> in international revenue in first year</li>
                                 </ul>
                             </div>
                         </div>
@@ -650,9 +553,9 @@ const LocalizationServices = () => {
                             <div className="story-results">
                                 <h4>Results:</h4>
                                 <ul>
-                                    <li>**100% regulatory approval rate**</li>
+                                    <li><strong>100% regulatory approval rate</strong></li>
                                     <li>Zero translation-related compliance issues</li>
-                                    <li>Reduced regulatory approval timeline by **25%**</li>
+                                    <li>Reduced regulatory approval timeline by <strong>25%</strong></li>
                                 </ul>
                             </div>
                         </div>
@@ -671,16 +574,16 @@ const LocalizationServices = () => {
                             <div className="story-results">
                                 <h4>Results:</h4>
                                 <ul>
-                                    <li>Successfully launched in all 10 markets within **6 months**</li>
-                                    <li>**250% increase** in international sales within first year</li>
-                                    <li>**30% reduction** in customer support tickets</li>
+                                    <li>Successfully launched in all 10 markets within <strong>6 months</strong></li>
+                                    <li><strong>250% increase</strong> in international sales within first year</li>
+                                    <li><strong>30% reduction</strong> in customer support tickets</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </section>
                 
-                {/* --- FAQ SECTION (Re-used) --- */}
+                {/* --- FAQ SECTION --- */}
                 <section>
                     <p className="section-subtitle-small">Transparency and Clarity</p>
                     <h2 className="section-title">Frequently Asked Questions</h2>
@@ -697,18 +600,6 @@ const LocalizationServices = () => {
                     </div>
                 </section>
 
-                {/* --- FINAL CTA SECTION --- */}
-                <section className="cta-section">
-                    <h2 className="cta-headline">Ready to Go Global?</h2>
-                    <p>Take Your Business to Global Markets with Confidence.</p>
-                    <div className="cta-buttons">
-                        <a href="#quote" className="btn-primary">Request a Custom Quote</a>
-                        <a href="#consultation" className="btn-secondary">Schedule a Free Consultation</a>
-                    </div>
-                    <div className="contact-details-cta">
-                        Contact Our Localization Specialists: Email: <a href="mailto:coord@tevacraft.in">coord@tevacraft.in</a> | Phone / Whatsapp: 9010805455
-                    </div>
-                </section>
 
             </div>
         </div>
