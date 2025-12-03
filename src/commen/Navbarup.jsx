@@ -44,7 +44,7 @@ const Navbarup = () => {
                     --primary-color: #4CAF50;
                     --secondary-color: #004c99;
                     --text-dark: #1f2937;
-                    --text-light: #ffffff;
+                    --text-light: #FFFFFF;
                     --navbar-height: 80px;
                     --padding-inline: 4%;
                 }
@@ -87,7 +87,7 @@ const Navbarup = () => {
                 }
 
                 .logo-image {
-                    height: 55px; 
+                    height: 70px; 
                     width: auto;
                     transition: transform 0.3s ease;
                     list-style: none; 
