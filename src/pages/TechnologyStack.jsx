@@ -1,9 +1,42 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+
+// --- Custom Hook for Intersection Observer (Scroll Trigger) ---
+/**
+ * Hook to determine if an element is currently in the viewport.
+ */
+const useInView = (options) => {
+    const ref = useRef(null);
+    const [inView, setInView] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                setInView(true);
+                // Stop observing after it has entered the view once
+                if (ref.current) {
+                    observer.unobserve(ref.current);
+                }
+            }
+        }, options);
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [options]);
+
+    return [ref, inView];
+};
 
 // --- Reusable Component for AWS Service Block ---
-const TechnologyCard = ({ title, description, icon, delay }) => (
+const TechnologyCard = ({ title, description, icon, delay, parentInView }) => (
     <div 
-        className="tech-card"
+        className={`tech-card ${parentInView ? 'is-animated' : ''}`}
         style={{ '--delay': `${delay}ms` }} 
     >
         <div className="tech-icon">{icon}</div>
@@ -13,12 +46,21 @@ const TechnologyCard = ({ title, description, icon, delay }) => (
 );
 
 // --- Reusable Component for Framework/Security List ---
-const SimpleListItem = ({ text }) => (
-    <li className="simple-list-item">{text}</li>
+const SimpleListItem = ({ text, delay, parentInView }) => (
+    <li 
+        className={`simple-list-item ${parentInView ? 'is-animated-list' : ''}`}
+        style={{ '--delay': `${delay}ms` }}
+    >
+        {text}
+    </li>
 );
 
 
 const TechnologyStack = () => {
+
+    // --- Scroll Refs for Sections ---
+    const [awsRef, awsInView] = useInView({ threshold: 0.1 });
+    const [frameworksRef, frameworksInView] = useInView({ threshold: 0.2 });
 
     // --- Data for AWS Services Section ---
     const awsServices = [
@@ -77,6 +119,10 @@ const TechnologyStack = () => {
         "Regular security audits and monitoring",
         "Disaster recovery and business continuity planning",
     ];
+    
+    // Calculate delays for staggered list items
+    const maxFrameworkDelay = frameworks.length * 100;
+    const maxSecurityDelay = securityItems.length * 100;
 
     return (
         <div className="tech-stack-wrapper">
@@ -112,6 +158,27 @@ const TechnologyStack = () => {
                 }
 
                 /* ========================================= */
+                /* --- SCROLL ANIMATION KEYFRAMES & CLASSES --- */
+                /* ========================================= */
+                @keyframes fadeInRise {
+                    from { opacity: 0; transform: translateY(30px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                
+                /* Base class for titles/sections that should fade in when parent is visible */
+                .fade-in-title {
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: opacity 1s ease-out, transform 1s ease-out;
+                    transition-delay: var(--delay);
+                }
+                .fade-in-title.is-visible {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                
+                /* ========================================= */
                 /* --- HERO SECTION (Green Gradient) --- */
                 /* ========================================= */
                 .hero-section {
@@ -127,121 +194,26 @@ const TechnologyStack = () => {
                 }
                 
                 /* Hero Animations */
-                @keyframes robotToolsFlow1 {
-                    0% { background-position: 0 0; }
-                    100% { background-position: 200px 200px; }
-                }
-                @keyframes robotToolsFlow2 {
-                    0% { background-position: 0 0; }
-                    100% { background-position: -150px 150px; }
-                }
-                @keyframes teachingSpotlight {
-                    0% { left: -20%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; }
-                    50% { left: 50%; transform: translateY(-50%) rotate(-5deg); opacity: 1; } 
-                    100% { left: 120%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; }
-                }
-                @keyframes quantumPulse {
-                    0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.5); }
-                    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(3); } 
-                    100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6); }
-                }
-                @keyframes slideInDown {
-                    from { opacity: 0; transform: translateY(-20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
+                @keyframes robotToolsFlow1 { 0% { background-position: 0 0; } 100% { background-position: 200px 200px; } }
+                @keyframes robotToolsFlow2 { 0% { background-position: 0 0; } 100% { background-position: -150px 150px; } }
+                @keyframes teachingSpotlight { 0% { left: -20%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } 50% { left: 50%; transform: translateY(-50%) rotate(-5deg); opacity: 1; } 100% { left: 120%; transform: translateY(-50%) rotate(10deg); opacity: 0.7; } }
+                @keyframes quantumPulse { 0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(3); } 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6); } }
+                @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+                @keyframes gridFlow { 0% { background-position: 0 0; } 100% { background-position: 300px 300px; } }
 
-                /* Overlay Elements */
-                .hero-section::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 1; 
-                    opacity: 0.7;
-                    pointer-events: none;
-                    background-image: 
-                        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px),
-                        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px);
-                    background-size: 100px 100px, 100px 100px;
-                    background-position: 0 0, 0 0; 
-                    animation: robotToolsFlow1 30s linear infinite, robotToolsFlow2 40s linear reverse infinite;
-                }
-                
-                .hero-section::after {
-                    content: '';
-                    position: absolute;
-                    top: 50%; 
-                    left: -20%; 
-                    width: 40%;
-                    height: 100%; 
-                    transform: translateY(-50%) rotate(10deg); 
-                    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 10%, rgba(76, 175, 80, 0.3) 50%, rgba(255, 255, 255, 0.1) 90%, transparent);
-                    filter: blur(80px);
-                    z-index: 2; 
-                    opacity: 0.8;
-                    pointer-events: none;
-                    animation: teachingSpotlight 25s ease-in-out infinite alternate; 
-                }
+                /* Hero Overlays/Content Styles (Unchanged) */
+                .hero-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; pointer-events: none; background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 20px); background-size: 100px 100px, 100px 100px; background-position: 0 0, 0 0; animation: robotToolsFlow1 30s linear infinite, robotToolsFlow2 40s linear reverse infinite; }
+                .hero-section::after { content: ''; position: absolute; top: 50%; left: -20%; width: 40%; height: 100%; transform: translateY(-50%) rotate(10deg); background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 10%, rgba(76, 175, 80, 0.3) 50%, rgba(255, 255, 255, 0.1) 90%, transparent); filter: blur(80px); z-index: 2; opacity: 0.8; pointer-events: none; animation: teachingSpotlight 25s ease-in-out infinite alternate; }
+                .hero-content { max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
+                .hero-content::before { content: ''; position: absolute; top: 50%; left: 50%; width: 50px; height: 50px; background: radial-gradient(circle, var(--hero-glow-color) 0%, transparent 70%); border-radius: 50%; transform: translate(-50%, -50%); z-index: 5; pointer-events: none; animation: quantumPulse 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
+                .hero-headline { font-size: 4.5rem; font-weight: 900; margin-bottom: 25px; line-height: 1.1; animation: slideInDown 1.5s ease-out; }
+                .hero-subheadline { font-size: 1.45rem; font-weight: 300; margin-bottom: 50px; opacity: 0.95; animation: slideInDown 1.8s ease-out; }
+                .hero-grid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.3; background-image: linear-gradient(to right, rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 30px 30px, 30px 30px; animation: gridFlow 60s linear infinite; }
 
-                .hero-content {
-                    max-width: 900px;
-                    margin: 0 auto;
-                    position: relative;
-                    z-index: 10; 
-                }
-                
-                .hero-content::before {
-                    content: '';
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 50px; 
-                    height: 50px; 
-                    background: radial-gradient(circle, var(--hero-glow-color) 0%, transparent 70%);
-                    border-radius: 50%;
-                    transform: translate(-50%, -50%);
-                    z-index: 5; 
-                    pointer-events: none;
-                    animation: quantumPulse 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-                }
 
-                .hero-headline {
-                    font-size: 4.5rem; 
-                    font-weight: 900;
-                    margin-bottom: 25px;
-                    line-height: 1.1;
-                    animation: slideInDown 1.5s ease-out; 
-                }
-
-                .hero-subheadline {
-                    font-size: 1.45rem;
-                    font-weight: 300;
-                    margin-bottom: 50px;
-                    opacity: 0.95;
-                    animation: slideInDown 1.8s ease-out; 
-                }
-                
-                .hero-grid {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 0; 
-                    pointer-events: none;
-                    opacity: 0.3; 
-                    background-image: linear-gradient(to right, rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.07) 1px, transparent 1px);
-                    background-size: 30px 30px, 30px 30px;
-                    animation: gridFlow 60s linear infinite; 
-                }
-                @keyframes gridFlow {
-                    0% { background-position: 0 0; }
-                    100% { background-position: 300px 300px; }
-                }
-
-                /* --- AWS Services Grid --- */
+                /* ========================================= */
+                /* --- AWS SERVICES GRID & TECHNOLOGY CARD --- */
+                /* ========================================= */
                 .aws-services-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -249,12 +221,7 @@ const TechnologyStack = () => {
                     margin-bottom: 80px;
                 }
                 
-                @keyframes fadeInRise {
-                    from { opacity: 0; transform: translateY(30px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                
-                /* --- Technology Card (AWS Services) --- */
+                /* --- Technology Card (Individual Animation) --- */
                 .tech-card {
                     background-color: var(--bg-subtle);
                     border-radius: var(--border-radius);
@@ -268,77 +235,36 @@ const TechnologyStack = () => {
                     position: relative;
                     overflow: hidden;
                     z-index: 1;
+                    
+                    /* Initial state for scroll animation */
                     opacity: 0;
                     transform: translateY(30px);
+                }
+                .tech-card.is-animated {
                     animation: fadeInRise 0.8s forwards;
                     animation-delay: var(--delay);
                 }
 
                 /* CARD HOVER FILL (Green Gradient) */
                 .tech-card::before {
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 0%; 
-                    background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%);
-                    transition: height 0.4s ease-in-out;
-                    z-index: -1; 
+                    content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; 
+                    background: linear-gradient(135deg, #1e4d2b 0%, #4CAF50 100%); transition: height 0.4s ease-in-out; z-index: -1; 
                 }
-
-                .tech-card:hover::before {
-                    height: 100%;
-                }
-
-                .tech-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: var(--shadow-premium);
-                    border-color: transparent;
-                }
+                .tech-card:hover::before { height: 100%; }
+                .tech-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-premium); border-color: transparent; }
                 
-                .tech-icon {
-                    font-size: 2rem;
-                    margin-bottom: 15px;
-                    width: 50px;
-                    height: 50px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: rgba(76, 175, 80, 0.1);
-                    border-radius: 50%;
-                    transition: all 0.3s ease;
-                }
-                
-                .tech-card:hover .tech-icon {
-                    background: rgba(255, 255, 255, 0.2);
-                    color: #ffffff;
-                }
+                .tech-icon { font-size: 2rem; margin-bottom: 15px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: rgba(76, 175, 80, 0.1); border-radius: 50%; transition: all 0.3s ease; }
+                .tech-card:hover .tech-icon { background: rgba(255, 255, 255, 0.2); color: #ffffff; }
 
-                .card-title-tech {
-                    font-size: 1.4rem;
-                    font-weight: 700;
-                    color: var(--text-dark);
-                    margin: 0 0 10px 0;
-                    transition: color 0.3s ease;
-                }
-                .tech-card:hover .card-title-tech {
-                    color: #ffffff;
-                }
+                .card-title-tech { font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin: 0 0 10px 0; transition: color 0.3s ease; }
+                .tech-card:hover .card-title-tech { color: #ffffff; }
 
-                .card-description-tech {
-                    font-size: 0.95rem;
-                    color: var(--muted-text);
-                    line-height: 1.6;
-                    margin: 0;
-                    flex-grow: 1;
-                    transition: color 0.3s ease;
-                }
-                .tech-card:hover .card-description-tech {
-                    color: #ffffff;
-                }
+                .card-description-tech { font-size: 0.95rem; color: var(--muted-text); line-height: 1.6; margin: 0; flex-grow: 1; transition: color 0.3s ease; }
+                .tech-card:hover .card-description-tech { color: #ffffff; }
 
+                /* ========================================= */
                 /* --- Sub-Sections (Frameworks & Security) --- */
+                /* ========================================= */
                 .sub-sections-flex {
                     display: flex;
                     gap: 40px;
@@ -353,9 +279,11 @@ const TechnologyStack = () => {
                     font-weight: 700;
                     margin-bottom: 25px;
                     color: var(--text-dark);
+                    
+                    /* Initial state for scroll animation on title (Controlled by fade-in-title class) */
                 }
-                
-                /* --- List Styling --- */
+
+                /* --- List Styling (Individual Item Animation) --- */
                 .simple-list {
                     list-style: none;
                     padding: 0;
@@ -368,7 +296,18 @@ const TechnologyStack = () => {
                     padding-left: 25px;
                     position: relative;
                     line-height: 1.5;
+                    
+                    /* Initial state for scroll animation */
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
                 }
+                .simple-list-item.is-animated-list {
+                    opacity: 1;
+                    transform: translateY(0);
+                    transition-delay: var(--delay);
+                }
+
                 .simple-list-item::before {
                     content: '✓'; 
                     color: var(--brand-color);
@@ -396,7 +335,7 @@ const TechnologyStack = () => {
                 }
                 @media (max-width: 480px) {
                     .hero-section::after, .hero-section::before, .hero-grid, .hero-content::before {
-                         display: none; 
+                           display: none; 
                     }
                 }
             `}</style>
@@ -417,9 +356,12 @@ const TechnologyStack = () => {
             </section>
 
             <div className="tech-container">
-                {/* --- AWS Services Grid --- */}
-                <section>
-                    <h2 className="sub-section-title" style={{ textAlign: 'center', marginBottom: '40px' }}>
+                {/* --- AWS Services Grid - SCROLL TRIGGERED --- */}
+                <section ref={awsRef}>
+                    <h2 
+                        className={`sub-section-title fade-in-title ${awsInView ? 'is-visible' : ''}`}
+                        style={{ textAlign: 'center', marginBottom: '40px', '--delay': '0ms'}}
+                    >
                         AWS AI & Machine Learning Services
                     </h2>
                     <div className="aws-services-grid">
@@ -430,28 +372,50 @@ const TechnologyStack = () => {
                                 description={service.description}
                                 icon={service.icon}
                                 delay={service.delay}
+                                parentInView={awsInView} // Trigger animation when AWS section is visible
                             />
                         ))}
                     </div>
                 </section>
                 
-                {/* --- Development Frameworks & Security Section --- */}
-                <section className="sub-sections-flex">
+                {/* --- Development Frameworks & Security Section - SCROLL TRIGGERED --- */}
+                <section 
+                    className={`sub-sections-flex`} 
+                    ref={frameworksRef} 
+                >
                     
-                    <div className="sub-section-content">
-                        <h2 className="sub-section-title">Development Frameworks & Tools</h2>
+                    {/* Development Frameworks */}
+                    <div 
+                        className={`sub-section-content ${frameworksInView ? 'is-visible' : ''}`}
+                        style={{'--delay': '0ms'}}
+                    >
+                        <h2 className="sub-section-title fade-in-title">Development Frameworks & Tools</h2>
                         <ul className="simple-list">
                             {frameworks.map((item, index) => (
-                                <SimpleListItem key={index} text={item} />
+                                <SimpleListItem 
+                                    key={index} 
+                                    text={item} 
+                                    delay={index * 150} // Staggered delay for list items
+                                    parentInView={frameworksInView} // Trigger animation when section is visible
+                                />
                             ))}
                         </ul>
                     </div>
 
-                    <div className="sub-section-content">
-                        <h2 className="sub-section-title">Security & Compliance</h2>
+                    {/* Security & Compliance */}
+                    <div 
+                        className={`sub-section-content ${frameworksInView ? 'is-visible' : ''}`}
+                        style={{'--delay': `${maxFrameworkDelay + 100}ms`}}
+                    >
+                        <h2 className="sub-section-title fade-in-title">Security & Compliance</h2>
                         <ul className="simple-list">
                             {securityItems.map((item, index) => (
-                                <SimpleListItem key={index} text={item} />
+                                <SimpleListItem 
+                                    key={index} 
+                                    text={item} 
+                                    delay={(maxFrameworkDelay / 3) + (index * 150)} // Staggered delay starts later
+                                    parentInView={frameworksInView} // Trigger animation when section is visible
+                                />
                             ))}
                         </ul>
                     </div>
